@@ -2,34 +2,580 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Casa da Madrinha · Caminha</title>
+<title>Casa da Madrinha · House with pool in Caminha, Portugal</title>
+<meta name="description" content="A house with a pool, a garden and room for eight in Caminha, where the Minho river meets the Atlantic. Check availability and contact the owner directly.">
+<meta name="theme-color" content="#1E2D24">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233F6248'/%3E%3Cpath d='M32 14c-9 0-15 5-15 9 0 3 4 5 9 5h12c5 0 9-2 9-5 0-4-6-9-15-9z' fill='%23EEF1EA'/%3E%3Cpath d='M32 27v16' stroke='%23EEF1EA' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M14 46c6-4 12-4 18 0s12 4 18 0' stroke='%23E6D3A3' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=DM+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap">
 <style>
-:root{--bg:#EEF1EA;--ink:#1E2D24;--acc:#3F6248;--muted:#4f5d54}
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;padding:24px;box-sizing:border-box}
-main{max-width:34rem;text-align:left}
-h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.05;margin:0 0 12px}
-p{color:var(--muted);line-height:1.6;margin:0 0 10px}
-.k{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--acc)}
-#sync{font-size:.85rem}
+/* Mata e Maré — layout: página única, secções em faixa, conteúdo a 72rem */
+:root{
+  --nevoa:#EEF1EA; --musgo:#1E2D24; --verde:#3F6248; --mare:#2C5A6B; --luz:#E6D3A3; --veu:#14201A;
+  --bg:var(--nevoa); --surface:#FFFFFF; --ink:var(--musgo); --muted:#4E5D53; --line:#D3DACF; --busy:#C9D2C6;
+  --disp:"Fraunces",Georgia,"Times New Roman",serif; --ui:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:12px; --w:72rem;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--mare)}
+:focus-visible{outline:2px solid var(--mare);outline-offset:3px}
+.wrap{max-width:var(--w);margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--disp);font-weight:600;line-height:1.08;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.9rem,4vw,2.7rem)}
+h3{font-size:1.3rem}
+.eyebrow{font-size:.75rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--verde);margin:0 0 10px}
+.lead{font-size:1.12rem;color:var(--muted);max-width:62ch;margin:14px 0 0}
+section{padding-block:72px}
+section+section{border-top:1px solid var(--line)}
+
+/* barra superior */
+.top{position:absolute;inset:0 0 auto 0;z-index:5;padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:var(--disp);font-size:1.15rem;font-weight:600}
+.brand svg{width:34px;height:34px}
+.lang{display:flex;border:1px solid rgba(255,255,255,.5);border-radius:999px;overflow:hidden}
+.lang button{background:none;border:0;color:#fff;font:500 .8rem var(--ui);letter-spacing:.08em;padding:6px 12px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--musgo)}
+
+/* hero */
+.hero{position:relative;min-height:min(88vh,760px);display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:var(--veu);padding:0;border:0}
+.hero .art{position:absolute;inset:0;width:100%;height:100%}
+.hero .art img{width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,32,26,.30) 0%,rgba(20,32,26,.05) 25%,rgba(20,32,26,.45) 50%,rgba(20,32,26,.88) 100%)}
+.hero .wrap{position:relative;z-index:2;padding-block:120px 56px;width:100%}
+.hero .eyebrow{color:var(--luz)}
+.hero h1{font-size:clamp(2.8rem,8vw,5.6rem);font-weight:600}
+.hero h1 em{font-style:italic;font-weight:400}
+.hero p{font-size:clamp(1.05rem,2.2vw,1.25rem);max-width:40ch;margin:16px 0 26px;color:#F2F4EF}
+.facts{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 28px;padding:0;list-style:none;font-size:.95rem;color:#E9EDE6}
+.facts li{display:flex;align-items:center;gap:8px}
+.facts li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--luz)}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;font:600 .95rem var(--ui);text-decoration:none;cursor:pointer;border:1.5px solid transparent;transition:background .15s,color .15s,border-color .15s}
+.btn-primary{background:var(--luz);color:var(--musgo)}
+.btn-primary:hover{background:#F0E2BD}
+.btn-ghost{border-color:rgba(255,255,255,.7);color:#fff;background:transparent}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.btn-dark{background:var(--verde);color:#fff}
+.btn-dark:hover{background:#355540}
+.btn-line{border-color:var(--verde);color:var(--verde);background:transparent}
+.btn-line:hover{background:rgba(63,98,72,.08)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* destaques */
+.grid-high{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:36px}
+.high{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.high svg{width:34px;height:34px;color:var(--verde)}
+.high p{margin:0;color:var(--muted);font-size:.95rem}
+
+/* casa */
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;align-items:start}
+.spec{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:6px}
+.spec div{background:var(--surface);padding:18px}
+.spec b{display:block;font-family:var(--disp);font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.spec span{font-size:.85rem;color:var(--muted)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:32px}
+.gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block}
+.soon{margin-top:28px;border:1px dashed var(--line);border-radius:var(--r);padding:18px;color:var(--muted);font-size:.95rem;background:rgba(255,255,255,.5)}
+
+/* calendário */
+.cal-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:30px 0 14px}
+.cal-nav{display:flex;gap:8px}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:grid;place-items:center}
+.icon-btn:disabled{opacity:.4;cursor:not-allowed}
+.months{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.month{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.month h3{font-size:1.1rem;margin:0 0 10px;text-transform:capitalize}
+.dow,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
+.dow span{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:4px 0}
+.day{aspect-ratio:1;display:grid;place-items:center;border-radius:8px;font-size:.88rem;font-variant-numeric:tabular-nums;border:0;background:none;color:var(--ink);font-family:var(--ui);padding:0}
+button.day{cursor:pointer}
+button.day:hover{background:rgba(63,98,72,.12)}
+.day.past{color:#A7B1A9}
+.day.busy{background:var(--busy);color:#6F7A72;text-decoration:line-through}
+.day.sel,.day.edge{background:var(--verde);color:#fff}
+.day.range{background:rgba(63,98,72,.18)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.85rem;color:var(--muted);margin-top:14px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px;border:1px solid var(--line)}
+.sel-box{margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.sel-box p{margin:0;flex:1 1 240px}
+.sync{font-size:.82rem;color:var(--muted);margin-top:10px}
+
+/* zona */
+.places{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:32px}
+.place{border-top:2px solid var(--verde);padding-top:14px;min-width:0}
+.place h3{font-size:1.15rem}
+.place .t{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mare);margin:4px 0 6px;font-weight:500}
+.place p{margin:0;color:var(--muted);font-size:.95rem}
+.map{margin-top:36px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.map iframe{display:block;width:100%;height:340px;border:0}
+.map p{margin:0;padding:10px 14px;font-size:.82rem;color:var(--muted)}
+.season{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px}
+.season div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.season h3{font-size:1.05rem;margin-bottom:6px}
+.season p{margin:0;font-size:.92rem;color:var(--muted)}
+
+/* chegar */
+.arrive{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px}
+.arrive div{min-width:0}
+.arrive b{display:block;font-family:var(--disp);font-size:1.4rem;font-weight:600}
+.arrive span{color:var(--muted);font-size:.92rem}
+
+/* faq */
+.faq{margin-top:28px;display:flex;flex-direction:column;gap:10px;max-width:52rem}
+details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 18px}
+summary{cursor:pointer;padding:16px 0;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--disp);font-size:1.4rem;line-height:1;color:var(--verde)}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 16px;color:var(--muted)}
+
+/* contacto */
+.contact{background:var(--musgo);color:#EEF1EA;border:0}
+.contact .eyebrow{color:var(--luz)}
+.contact .lead{color:#C9D3CB}
+.contact a{color:var(--luz)}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:30px;max-width:52rem}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f.full{grid-column:1/-1}
+label{font-size:.85rem;font-weight:500;color:#DDE4DE}
+input,textarea,select{font:inherit;font-size:1rem;color:var(--musgo);background:#F7F9F5;border:1px solid transparent;border-radius:10px;padding:12px 14px;width:100%}
+textarea{min-height:130px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--luz);outline-offset:1px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.status{font-size:.92rem;margin:0}
+.alt{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.alt .btn-ghost{border-color:rgba(238,241,234,.55)}
+.consent{font-size:.8rem;color:#AFBBB2;grid-column:1/-1;margin:0}
+
+footer{background:var(--veu);color:#AEB9B1;font-size:.85rem;padding-block:28px calc(28px + env(safe-area-inset-bottom,0px))}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px}
+footer b{color:#EEF1EA;font-weight:600}
+
+@media (max-width:640px){
+  section{padding-block:56px}
+  form{grid-template-columns:1fr}
+  .spec b{font-size:1.6rem}
+}
 </style>
 </head>
 <body>
-<main>
-<p class="k">Caminha · Alto Minho · Portugal</p>
-<h1>Casa da Madrinha</h1>
-<p>A house with a pool, a garden and room for eight, where the Minho river meets the Atlantic. Our new website is on its way.</p>
-<p id="sync"></p>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Casa da Madrinha">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 12c-10 0-17 5-17 10 0 3.5 4.5 5.5 10 5.5h14c5.5 0 10-2 10-5.5 0-5-7-10-17-10z" fill="currentColor"/><path d="M32 26v17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><path d="M12 47c6.7-4.5 13.3-4.5 20 0s13.3 4.5 20 0M12 54c6.7-4.5 13.3-4.5 20 0s13.3 4.5 20 0" stroke="#E6D3A3" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+      <span>Casa da Madrinha</span>
+    </a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" aria-labelledby="h-hero">
+  <div class="art" id="hero-art" aria-hidden="true">
+    <!-- ilustração provisória até chegarem as fotografias -->
+    <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9FB9BE"/><stop offset=".55" stop-color="#D9D6BF"/><stop offset="1" stop-color="#E6D3A3"/></linearGradient>
+        <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2C5A6B"/><stop offset="1" stop-color="#1B3A45"/></linearGradient>
+      </defs>
+      <rect width="1600" height="1000" fill="url(#sky)"/>
+      <circle cx="1180" cy="330" r="70" fill="#F3E6C2" opacity=".9"/>
+      <path d="M0 560 C220 470 380 430 560 470 C700 500 760 420 900 380 C1040 340 1160 420 1300 470 C1420 510 1520 500 1600 480 V720 H0Z" fill="#6E8C7A" opacity=".75"/>
+      <path d="M0 620 C260 560 520 560 760 600 C980 636 1240 600 1600 560 V760 H0Z" fill="#3F6248"/>
+      <rect y="700" width="1600" height="300" fill="url(#sea)"/>
+      <path d="M0 740 C120 728 240 752 360 740 S600 728 720 740 960 752 1080 740 1320 728 1440 740 1600 748 1600 748" stroke="#9FC0C8" stroke-width="3" fill="none" opacity=".6"/>
+      <path d="M0 800 C140 786 280 814 420 800 S700 786 840 800 1120 814 1260 800 1600 790 1600 790" stroke="#9FC0C8" stroke-width="2" fill="none" opacity=".35"/>
+      <g fill="#1E2D24">
+        <path d="M180 560c-70 0-120 30-120 58 0 20 34 30 76 30h92c42 0 72-10 72-30 0-28-50-58-120-58z"/><rect x="172" y="630" width="14" height="110" rx="6"/>
+        <path d="M420 600c-50 0-86 22-86 42 0 14 24 21 54 21h66c30 0 52-7 52-21 0-20-36-42-86-42z"/><rect x="414" y="655" width="11" height="80" rx="5"/>
+        <path d="M1380 590c-60 0-102 26-102 50 0 17 29 25 64 25h78c36 0 61-8 61-25 0-24-41-50-101-50z"/><rect x="1373" y="655" width="12" height="90" rx="5"/>
+      </g>
+    </svg>
+  </div>
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="hero.eyebrow">Caminha · Alto Minho · Portugal</p>
+    <h1 id="h-hero">Casa <em>da</em> Madrinha</h1>
+    <p data-i18n="hero.text">A spacious house with a pool, a garden and wide views, where the Minho river meets the Atlantic.</p>
+    <ul class="facts">
+      <li data-i18n="fact.bedrooms">4 bedrooms</li>
+      <li data-i18n="fact.guests">Up to 8 guests</li>
+      <li data-i18n="fact.pool">Private pool</li>
+      <li data-i18n="fact.bbq">Garden and barbecue</li>
+    </ul>
+    <div class="btns">
+      <a class="btn btn-primary" href="#availability" data-i18n="cta.dates">Check dates</a>
+      <a class="btn btn-ghost" href="#contact" data-i18n="cta.contact">Contact the owner</a>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-house" id="house">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="house.eyebrow">The house</p>
+    <h2 id="h-house" data-i18n="house.title">Room to breathe, for up to eight</h2>
+    <p class="lead" data-i18n="house.lead">A family house made for long lunches in the garden, slow afternoons by the pool and evenings around the barbecue, with the views of the Alto Minho all around.</p>
+    <div class="grid-high">
+      <div class="high"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg><h3 data-i18n="h.space.t">Spacious house</h3><p data-i18n="h.space.d">Four bedrooms and generous living areas, so everyone has space of their own.</p></div>
+      <div class="high"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 18l6-8 4 5 3-3 7 6"/><circle cx="17" cy="6" r="2"/></svg><h3 data-i18n="h.views.t">Wide views</h3><p data-i18n="h.views.d">Open views over the landscape of the Alto Minho.</p></div>
+      <div class="high"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 16c2.5-1.5 4.5-1.5 7 0s4.5 1.5 7 0 4.5-1.5 6 0"/><path d="M2 20c2.5-1.5 4.5-1.5 7 0s4.5 1.5 7 0 4.5-1.5 6 0"/><path d="M8 13V5a2 2 0 014 0M16 13V5"/><path d="M8 8h8"/></svg><h3 data-i18n="h.pool.t">Private pool</h3><p data-i18n="h.pool.d">A pool for warm afternoons, a few steps from the house.</p></div>
+      <div class="high"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3c-4 0-7 2-7 4 0 1.5 2 2.3 4.5 2.3h5C17 9.3 19 8.5 19 7c0-2-3-4-7-4z"/><path d="M12 9.5V21"/><path d="M5 21h14"/></svg><h3 data-i18n="h.garden.t">Garden</h3><p data-i18n="h.garden.d">Outdoor space for children to play and for tables that run long.</p></div>
+      <div class="high"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 10h16a8 8 0 01-16 0z"/><path d="M8 18l-2 4M16 18l2 4"/><path d="M9 3c0 2 2 2 2 4M13 3c0 2 2 2 2 4"/></svg><h3 data-i18n="h.bbq.t">Barbecue</h3><p data-i18n="h.bbq.d">Fire up the grill for evenings outside with family and friends.</p></div>
+    </div>
+    <div class="split" style="margin-top:44px">
+      <div>
+        <h3 data-i18n="house.glance">At a glance</h3>
+        <div class="spec">
+          <div><b>4</b><span data-i18n="spec.bedrooms">bedrooms</span></div>
+          <div><b>8</b><span data-i18n="spec.guests">guests</span></div>
+          <div><b>16:00</b><span data-i18n="spec.checkin">check-in from</span></div>
+          <div><b>12:00</b><span data-i18n="spec.checkout">check-out by</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="gallery" id="gallery" hidden></div>
+        <p class="soon" id="gallery-soon" data-i18n="gallery.soon">Photos of every room are on their way. In the meantime, ask us anything about the house.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-av" id="availability">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="av.eyebrow">Availability</p>
+    <h2 id="h-av" data-i18n="av.title">Choose your dates</h2>
+    <p class="lead" data-i18n="av.lead">Tap your arrival day and then your departure day. We will confirm availability and send you the details directly.</p>
+    <div class="cal-head">
+      <div class="legend" aria-hidden="false">
+        <span><i style="background:var(--surface)"></i><span data-i18n="av.free">Available</span></span>
+        <span><i style="background:var(--busy)"></i><span data-i18n="av.busy">Booked</span></span>
+        <span><i style="background:var(--verde);border-color:var(--verde)"></i><span data-i18n="av.sel">Your dates</span></span>
+      </div>
+      <div class="cal-nav">
+        <button class="icon-btn" type="button" id="prev" aria-label="Previous months"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="icon-btn" type="button" id="next" aria-label="Next months"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <div class="months" id="months"></div>
+    <div class="sel-box" id="sel-box" hidden>
+      <p id="sel-text"></p>
+      <a class="btn btn-dark" href="#contact" data-i18n="av.ask">Ask about these dates</a>
+      <button class="btn btn-line" type="button" id="sel-clear" data-i18n="av.clear">Clear</button>
+    </div>
+    <p class="sync" id="sync"></p>
+  </div>
+</section>
+
+<section aria-labelledby="h-area" id="area">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="area.eyebrow">The area</p>
+    <h2 id="h-area" data-i18n="area.title">Where the Minho meets the Atlantic</h2>
+    <p class="lead" data-i18n="area.lead">Caminha sits at the northern edge of Portugal, between the river, the ocean and the hills, with Spain on the other bank.</p>
+    <div class="places">
+      <div class="place"><h3 data-i18n="p.foz.t">Foz do Minho and Camarido</h3><p class="t" data-i18n="p.foz.s">Beach · all year</p><p data-i18n="p.foz.d">The northernmost sea beach in Portugal, reached through the Camarido pine forest on a 1 km boardwalk, facing the Ínsua fort.</p></div>
+      <div class="place"><h3 data-i18n="p.moledo.t">Moledo</h3><p class="t" data-i18n="p.moledo.s">Beach · summer</p><p data-i18n="p.moledo.d">A Blue Flag beach of sand and rock, popular for surf, bodyboard and windsurf.</p></div>
+      <div class="place"><h3 data-i18n="p.ecovia.t">Ecovia do Minho</h3><p class="t" data-i18n="p.ecovia.s">Walking and cycling · spring and autumn</p><p data-i18n="p.ecovia.d">A nearly flat path along the river from Caminha to Vila Nova de Cerveira and on to Valença.</p></div>
+      <div class="place"><h3 data-i18n="p.arga.t">Serra d'Arga</h3><p class="t" data-i18n="p.arga.s">Trails · all year</p><p data-i18n="p.arga.d">Signposted mountain trails, granite villages and natural pools for summer swims.</p></div>
+      <div class="place"><h3 data-i18n="p.tecla.t">Monte de Santa Tecla</h3><p class="t" data-i18n="p.tecla.s">Spain · about 30 min by car</p><p data-i18n="p.tecla.d">An ancient hillfort with views over the river mouth, on the Spanish bank. Drive across the bridge at Vila Nova de Cerveira.</p></div>
+      <div class="place"><h3 data-i18n="p.viana.t">Viana do Castelo and Valença</h3><p class="t" data-i18n="p.viana.s">Day trips · about 25 min</p><p data-i18n="p.viana.d">Santa Luzia and the historic centre of Viana to the south, the walled fortress of Valença to the north.</p></div>
+    </div>
+    <div class="season">
+      <div><h3 data-i18n="s.win.t">Winter</h3><p data-i18n="s.win.d">Lamprey season in local restaurants from January, Christmas lights in the town square and quiet beaches.</p></div>
+      <div><h3 data-i18n="s.spr.t">Spring</h3><p data-i18n="s.spr.d">Green hills, cycling along the river and the first lunches outside.</p></div>
+      <div><h3 data-i18n="s.sum.t">Summer</h3><p data-i18n="s.sum.d">Beaches, the pool and music festivals: Vilar de Mouros is in the municipality, Paredes de Coura is close by.</p></div>
+      <div><h3 data-i18n="s.aut.t">Autumn</h3><p data-i18n="s.aut.d">Mountain trails, mild days by the sea and a calm base for remote work.</p></div>
+    </div>
+    <div class="map">
+      <iframe id="map" title="Map of Caminha" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      <p data-i18n="map.note">Approximate area. The exact address is shared when your stay is confirmed.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-arr" id="getting-here">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="arr.eyebrow">Getting here</p>
+    <h2 id="h-arr" data-i18n="arr.title">Close to two airports</h2>
+    <div class="arrive">
+      <div><b data-i18n="arr.opo.t">Porto airport</b><span data-i18n="arr.opo.d">About 90 km, around 1 hour by car on the A28.</span></div>
+      <div><b data-i18n="arr.vgo.t">Vigo airport</b><span data-i18n="arr.vgo.d">About 55 km, under 1 hour by car.</span></div>
+      <div><b data-i18n="arr.train.t">By train</b><span data-i18n="arr.train.d">Caminha is on the Minho line, with regular trains to Porto.</span></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-faq" id="faq">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="faq.eyebrow">Good to know</p>
+    <h2 id="h-faq" data-i18n="faq.title">Questions guests ask</h2>
+    <div class="faq">
+      <details><summary data-i18n="q1">What time is check-in and check-out?</summary><p data-i18n="a1">Check-in is from 16:00 and check-out is by 12:00.</p></details>
+      <details><summary data-i18n="q2">How do I book?</summary><p data-i18n="a2">Send us your dates through the form below and we will reply directly. You can also book through Airbnb or Booking.com.</p></details>
+      <details><summary data-i18n="q3">Is the calendar up to date?</summary><p data-i18n="a3">It is synchronised with our booking platforms every few hours. We always confirm availability when you contact us.</p></details>
+      <details><summary data-i18n="q4">How many people can stay?</summary><p data-i18n="a4">The house has four bedrooms and sleeps up to eight guests.</p></details>
+      <details><summary data-i18n="q5">Can I ask about parking, pets or something else?</summary><p data-i18n="a5">Of course. Write to us with your question and we will answer personally.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="contact" aria-labelledby="h-contact" id="contact">
+  <div class="wrap">
+    <p class="eyebrow" data-i18n="c.eyebrow">Contact</p>
+    <h2 id="h-contact" data-i18n="c.title">Talk to the owner</h2>
+    <p class="lead" data-i18n="c.lead">Tell us your dates and who is coming. We reply personally.</p>
+    <form id="form" novalidate>
+      <div class="f"><label for="f-name" data-i18n="f.name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+      <div class="f"><label for="f-email" data-i18n="f.email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="f"><label for="f-in" data-i18n="f.in">Arrival</label><input id="f-in" name="arrival" type="date"></div>
+      <div class="f"><label for="f-out" data-i18n="f.out">Departure</label><input id="f-out" name="departure" type="date"></div>
+      <div class="f"><label for="f-guests" data-i18n="f.guests">Guests</label><select id="f-guests" name="guests"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
+      <div class="f"><label for="f-country" data-i18n="f.country">Country</label><input id="f-country" name="country" autocomplete="country-name"></div>
+      <div class="f full"><label for="f-msg" data-i18n="f.msg">Message</label><textarea id="f-msg" name="message"></textarea></div>
+      <div class="hp" aria-hidden="true"><label for="f-hp">Leave empty</label><input id="f-hp" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <p class="consent" data-i18n="f.consent">We use your details only to answer this request.</p>
+      <div class="form-foot"><button class="btn btn-primary" type="submit" id="f-send" data-i18n="f.send">Send request</button><p class="status" id="f-status" role="status" aria-live="polite"></p></div>
+    </form>
+    <div class="alt" id="alt" hidden>
+      <span data-i18n="c.alt">Prefer a booking platform?</span>
+      <a class="btn btn-ghost" id="l-airbnb" href="#" target="_blank" rel="noopener" hidden>Airbnb</a>
+      <a class="btn btn-ghost" id="l-booking" href="#" target="_blank" rel="noopener" hidden>Booking.com</a>
+    </div>
+  </div>
+</section>
 </main>
+
+<footer>
+  <div class="wrap">
+    <span><b>Casa da Madrinha</b> · Caminha, Portugal</span>
+    <span><span data-i18n="foot.reg">Local accommodation registration</span>: <b id="reg">AL99123</b></span>
+  </div>
+</footer>
+
 <script>
-fetch("data/disponibilidade.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{
-  if(!d)return;
-  const t=new Date(d.atualizado);
-  document.getElementById("sync").textContent="Availability last synced: "+t.toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"})+".";
-}).catch(()=>{});
+(() => {
+const T = {
+ en:{},
+ pt:{
+  "hero.eyebrow":"Caminha · Alto Minho · Portugal",
+  "hero.text":"Uma casa espaçosa, com piscina, jardim e vistas largas, onde o rio Minho encontra o Atlântico.",
+  "fact.bedrooms":"4 quartos","fact.guests":"Até 8 pessoas","fact.pool":"Piscina privada","fact.bbq":"Jardim e churrasqueira",
+  "cta.dates":"Ver datas","cta.contact":"Falar com o proprietário",
+  "house.eyebrow":"A casa","house.title":"Espaço para respirar, até oito pessoas",
+  "house.lead":"Uma casa de família feita para almoços longos no jardim, tardes calmas junto à piscina e noites à volta da churrasqueira, com as vistas do Alto Minho em redor.",
+  "h.space.t":"Casa espaçosa","h.space.d":"Quatro quartos e salas amplas, para cada um ter o seu espaço.",
+  "h.views.t":"Vistas largas","h.views.d":"Vistas abertas sobre a paisagem do Alto Minho.",
+  "h.pool.t":"Piscina privada","h.pool.d":"Uma piscina para as tardes quentes, a poucos passos de casa.",
+  "h.garden.t":"Jardim","h.garden.d":"Espaço exterior para as crianças brincarem e para mesas que se prolongam.",
+  "h.bbq.t":"Churrasqueira","h.bbq.d":"Acenda o grelhador para noites lá fora com família e amigos.",
+  "house.glance":"Em resumo","spec.bedrooms":"quartos","spec.guests":"pessoas","spec.checkin":"entrada a partir das","spec.checkout":"saída até às",
+  "gallery.soon":"As fotografias de cada divisão estão a caminho. Entretanto, pergunte-nos o que quiser sobre a casa.",
+  "av.eyebrow":"Disponibilidade","av.title":"Escolha as suas datas",
+  "av.lead":"Toque no dia de chegada e depois no dia de partida. Confirmamos a disponibilidade e respondemos diretamente.",
+  "av.free":"Livre","av.busy":"Ocupado","av.sel":"As suas datas","av.ask":"Perguntar por estas datas","av.clear":"Limpar",
+  "area.eyebrow":"A região","area.title":"Onde o Minho encontra o Atlântico",
+  "area.lead":"Caminha fica no extremo norte de Portugal, entre o rio, o oceano e a serra, com a Galiza na outra margem.",
+  "p.foz.t":"Foz do Minho e Camarido","p.foz.s":"Praia · todo o ano","p.foz.d":"A praia marítima mais a norte de Portugal, com acesso pelo pinhal do Camarido num passadiço de 1 km, em frente ao Forte da Ínsua.",
+  "p.moledo.t":"Moledo","p.moledo.s":"Praia · verão","p.moledo.d":"Praia de areia e rocha com Bandeira Azul, procurada para surf, bodyboard e windsurf.",
+  "p.ecovia.t":"Ecovia do Minho","p.ecovia.s":"A pé e de bicicleta · primavera e outono","p.ecovia.d":"Um percurso quase plano ao longo do rio, de Caminha a Vila Nova de Cerveira e até Valença.",
+  "p.arga.t":"Serra d'Arga","p.arga.s":"Trilhos · todo o ano","p.arga.d":"Trilhos de montanha sinalizados, aldeias de granito e lagoas naturais para banhos no verão.",
+  "p.tecla.t":"Monte de Santa Tecla","p.tecla.s":"Galiza · cerca de 30 min de carro","p.tecla.d":"Um castro antigo com vista sobre a foz, na margem espanhola. Atravesse pela ponte de Vila Nova de Cerveira.",
+  "p.viana.t":"Viana do Castelo e Valença","p.viana.s":"Passeios de um dia · cerca de 25 min","p.viana.d":"Santa Luzia e o centro histórico de Viana a sul, a fortaleza amuralhada de Valença a norte.",
+  "s.win.t":"Inverno","s.win.d":"Época da lampreia nos restaurantes a partir de janeiro, luzes de Natal na praça e praias tranquilas.",
+  "s.spr.t":"Primavera","s.spr.d":"Serra verde, bicicleta junto ao rio e os primeiros almoços lá fora.",
+  "s.sum.t":"Verão","s.sum.d":"Praias, piscina e festivais: Vilar de Mouros fica no concelho e Paredes de Coura é perto.",
+  "s.aut.t":"Outono","s.aut.d":"Trilhos na serra, dias amenos junto ao mar e uma base tranquila para trabalhar à distância.",
+  "map.note":"Zona aproximada. A morada exata é enviada quando a estadia for confirmada.",
+  "arr.eyebrow":"Como chegar","arr.title":"Perto de dois aeroportos",
+  "arr.opo.t":"Aeroporto do Porto","arr.opo.d":"Cerca de 90 km, perto de 1 hora de carro pela A28.",
+  "arr.vgo.t":"Aeroporto de Vigo","arr.vgo.d":"Cerca de 55 km, menos de 1 hora de carro.",
+  "arr.train.t":"De comboio","arr.train.d":"Caminha fica na linha do Minho, com comboios regulares para o Porto.",
+  "faq.eyebrow":"Bom saber","faq.title":"Perguntas dos hóspedes",
+  "q1":"A que horas é a entrada e a saída?","a1":"A entrada é a partir das 16:00 e a saída até às 12:00.",
+  "q2":"Como reservo?","a2":"Envie-nos as suas datas pelo formulário abaixo e respondemos diretamente. Também pode reservar pelo Airbnb ou pelo Booking.com.",
+  "q3":"O calendário está atualizado?","a3":"É sincronizado com as plataformas de reserva de poucas em poucas horas. Confirmamos sempre a disponibilidade quando nos contacta.",
+  "q4":"Quantas pessoas podem ficar?","a4":"A casa tem quatro quartos e recebe até oito pessoas.",
+  "q5":"Posso perguntar sobre estacionamento, animais ou outra coisa?","a5":"Claro. Escreva-nos com a sua pergunta e respondemos pessoalmente.",
+  "c.eyebrow":"Contacto","c.title":"Fale com o proprietário","c.lead":"Diga-nos as datas e quem vem. Respondemos pessoalmente.",
+  "f.name":"Nome","f.email":"Email","f.in":"Chegada","f.out":"Partida","f.guests":"Pessoas","f.country":"País","f.msg":"Mensagem",
+  "f.consent":"Usamos os seus dados apenas para responder a este pedido.","f.send":"Enviar pedido",
+  "c.alt":"Prefere uma plataforma de reservas?","foot.reg":"Registo de Alojamento Local"
+ },
+ msg:{
+  en:{sync:"Availability last synchronised", nosync:"The live calendar is being connected. Send us your dates and we will confirm availability.",
+      sel1:"Arrival", sel2:"now choose your departure day.", nights:n=>n===1?"1 night":n+" nights", busyIn:"Some of these days are already booked. Please choose other dates.",
+      sending:"Sending…", ok:"Thank you. Your request has been sent and we will reply soon.", err:"The message could not be sent. Please try again in a moment.",
+      need:"Please fill in your name and a valid email.", off:"The contact form is being set up. Please come back soon.",
+      prev:"Previous months", next:"Next months", dates:"Dates"},
+  pt:{sync:"Disponibilidade sincronizada em", nosync:"O calendário está a ser ligado. Envie-nos as suas datas e confirmamos a disponibilidade.",
+      sel1:"Chegada", sel2:"escolha agora o dia de partida.", nights:n=>n===1?"1 noite":n+" noites", busyIn:"Alguns destes dias já estão ocupados. Escolha outras datas, por favor.",
+      sending:"A enviar…", ok:"Obrigado. O pedido foi enviado e respondemos em breve.", err:"Não foi possível enviar a mensagem. Tente novamente daqui a pouco.",
+      need:"Preencha o nome e um email válido, por favor.", off:"O formulário está a ser configurado. Volte em breve, por favor.",
+      prev:"Meses anteriores", next:"Meses seguintes", dates:"Datas"}
+ }
+};
+// guardar o texto inglês original
+document.querySelectorAll("[data-i18n]").forEach(el => { T.en[el.dataset.i18n] = el.innerHTML; });
+
+let lang = "en";
+try { const s = localStorage.getItem("cm-lang"); if (s) lang = s; else if ((navigator.language||"").toLowerCase().startsWith("pt")) lang = "pt"; } catch(e) { if ((navigator.language||"").toLowerCase().startsWith("pt")) lang = "pt"; }
+const M = () => T.msg[lang];
+
+function applyLang(l){
+  lang = l; document.documentElement.lang = l === "pt" ? "pt-PT" : "en";
+  document.querySelectorAll("[data-i18n]").forEach(el => { const v = (T[l]||{})[el.dataset.i18n] ?? T.en[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+  document.getElementById("prev").setAttribute("aria-label", M().prev);
+  document.getElementById("next").setAttribute("aria-label", M().next);
+  try { localStorage.setItem("cm-lang", l); } catch(e) {}
+  renderCal(); renderSync(); renderSel();
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+
+// ---------- datas ----------
+const iso = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const parse = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const today = new Date(); today.setHours(0,0,0,0);
+
+let busy = new Set(), syncInfo = null, start = null, end = null;
+let offset = 0; // meses a partir do mês atual
+const perView = () => window.matchMedia("(min-width:900px)").matches ? 3 : (window.matchMedia("(min-width:600px)").matches ? 2 : 1);
+const MAXM = 17;
+
+function isBusyNight(d){ return busy.has(iso(d)); }
+function rangeFree(a,b){ for (let d = new Date(a); d < b; d = addDays(d,1)) if (isBusyNight(d)) return false; return true; }
+
+function renderCal(){
+  const box = document.getElementById("months"); if (!box) return;
+  const n = perView(); box.innerHTML = "";
+  const fmtM = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB", {month:"long", year:"numeric"});
+  const fmtD = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB", {weekday:"short"});
+  const dows = []; for (let i=0;i<7;i++){ dows.push(fmtD.format(new Date(2024,0,1+i))); } // 1 jan 2024 = segunda
+  for (let k=0;k<n;k++){
+    const first = new Date(today.getFullYear(), today.getMonth()+offset+k, 1);
+    const el = document.createElement("div"); el.className = "month";
+    let h = `<h3>${fmtM.format(first)}</h3><div class="dow">${dows.map(x=>`<span>${x.replace(".","")}</span>`).join("")}</div><div class="days">`;
+    const lead = (first.getDay()+6)%7; for (let i=0;i<lead;i++) h += `<span></span>`;
+    const days = new Date(first.getFullYear(), first.getMonth()+1, 0).getDate();
+    for (let d=1; d<=days; d++){
+      const dt = new Date(first.getFullYear(), first.getMonth(), d), key = iso(dt);
+      let cls = "day";
+      const past = dt < today, b = isBusyNight(dt);
+      if (past) cls += " past"; else if (b) cls += " busy";
+      if (start && iso(start) === key) cls += " sel";
+      if (end && iso(end) === key) cls += " edge";
+      if (start && end && dt > start && dt < end) cls += " range";
+      const lbl = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB",{dateStyle:"full"}).format(dt);
+      if (past) h += `<span class="${cls}" aria-hidden="true">${d}</span>`;
+      else h += `<button type="button" class="${cls}" data-d="${key}" aria-label="${lbl}${b ? " · " + (lang==="pt"?"ocupado":"booked") : ""}">${d}</button>`;
+    }
+    el.innerHTML = h + "</div>"; box.appendChild(el);
+  }
+  document.getElementById("prev").disabled = offset <= 0;
+  document.getElementById("next").disabled = offset + n > MAXM;
+}
+
+document.getElementById("months").addEventListener("click", e => {
+  const b = e.target.closest("button.day"); if (!b) return;
+  const d = parse(b.dataset.d);
+  if (!start || end || d <= start){
+    if (isBusyNight(d)) { start = null; end = null; setMsg(M().busyIn); renderCal(); return; }
+    start = d; end = null;
+  } else {
+    if (!rangeFree(start, d)) { setMsg(M().busyIn); return; }
+    end = d;
+    document.getElementById("f-in").value = iso(start);
+    document.getElementById("f-out").value = iso(end);
+  }
+  renderCal(); renderSel();
+});
+document.getElementById("prev").addEventListener("click", () => { offset = Math.max(0, offset - perView()); renderCal(); });
+document.getElementById("next").addEventListener("click", () => { offset = Math.min(MAXM, offset + perView()); renderCal(); });
+document.getElementById("sel-clear").addEventListener("click", () => { start = end = null; renderCal(); renderSel(); });
+window.addEventListener("resize", () => renderCal());
+
+let selMsg = "";
+function setMsg(t){ selMsg = t; renderSel(true); }
+function renderSel(keep){
+  const box = document.getElementById("sel-box"), txt = document.getElementById("sel-text");
+  const f = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB",{day:"numeric",month:"short",year:"numeric"});
+  if (!keep) selMsg = "";
+  if (selMsg) { box.hidden = false; txt.textContent = selMsg; box.querySelector("a").hidden = true; return; }
+  box.querySelector("a").hidden = !end;
+  if (!start) { box.hidden = true; return; }
+  box.hidden = false;
+  if (!end) { txt.textContent = `${M().sel1}: ${f.format(start)} — ${M().sel2}`; return; }
+  const n = Math.round((end - start) / 864e5);
+  txt.textContent = `${f.format(start)} → ${f.format(end)} · ${M().nights(n)}`;
+}
+
+function renderSync(){
+  const el = document.getElementById("sync");
+  if (!syncInfo || !Object.values(syncInfo.fontes||{}).includes("ok")) { el.textContent = M().nosync; return; }
+  const t = new Date(syncInfo.atualizado);
+  el.textContent = `${M().sync}: ${t.toLocaleString(lang === "pt" ? "pt-PT" : "en-GB",{dateStyle:"medium",timeStyle:"short"})}.`;
+}
+
+fetch("data/disponibilidade.json",{cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => {
+  if (d) {
+    syncInfo = d;
+    (d.ocupado||[]).forEach(o => { for (let x = parse(o.inicio), e = parse(o.fim); x < e; x = addDays(x,1)) busy.add(iso(x)); });
+  }
+  renderCal(); renderSync();
+}).catch(() => { renderCal(); renderSync(); });
+
+// ---------- configuração ----------
+let CFG = {};
+fetch("config.json",{cache:"no-store"}).then(r => r.ok ? r.json() : {}).then(c => {
+  CFG = c || {};
+  if (CFG.registo_al) document.getElementById("reg").textContent = CFG.registo_al;
+  const L = CFG.links || {}; let any = false;
+  if (L.airbnb) { const a = document.getElementById("l-airbnb"); a.href = L.airbnb; a.hidden = false; any = true; }
+  if (L.booking) { const a = document.getElementById("l-booking"); a.href = L.booking; a.hidden = false; any = true; }
+  document.getElementById("alt").hidden = !any;
+  const bb = (CFG.mapa && CFG.mapa.bbox) || [-8.92,41.83,-8.76,41.91];
+  document.getElementById("map").src = `https://www.openstreetmap.org/export/embed.html?bbox=${bb.join("%2C")}&layer=mapnik`;
+  if (!(CFG.contacto && CFG.contacto.web3forms_key)) document.getElementById("f-status").textContent = "";
+}).catch(() => {});
+
+// ---------- formulário ----------
+document.getElementById("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const st = document.getElementById("f-status"), btn = document.getElementById("f-send");
+  const fd = new FormData(e.target);
+  if (fd.get("botcheck")) return;
+  const name = (fd.get("name")||"").trim(), email = (fd.get("email")||"").trim();
+  if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { st.textContent = M().need; return; }
+  const key = CFG.contacto && CFG.contacto.web3forms_key;
+  if (!key) { st.textContent = M().off; return; }
+  btn.disabled = true; st.textContent = M().sending;
+  const body = {
+    access_key: key, subject: (CFG.contacto && CFG.contacto.assunto) || "Casa da Madrinha", from_name: "Casa da Madrinha · site",
+    name, email, replyto: email, arrival: fd.get("arrival") || "-", departure: fd.get("departure") || "-",
+    guests: fd.get("guests"), country: fd.get("country") || "-", message: fd.get("message") || "-", language: lang
+  };
+  try {
+    const r = await fetch("https://api.web3forms.com/submit", {method:"POST", headers:{"Content-Type":"application/json", Accept:"application/json"}, body: JSON.stringify(body)});
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j.success !== false) { st.textContent = M().ok; e.target.reset(); start = end = null; renderCal(); renderSel(); }
+    else st.textContent = M().err;
+  } catch(err) { st.textContent = M().err; }
+  btn.disabled = false;
+});
+
+applyLang(lang);
+})();
 </script>
 </body>
 </html>
