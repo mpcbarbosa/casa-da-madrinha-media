@@ -258,9 +258,13 @@ def main():
     nome_site = norm(drive.get("pasta_site", "Site"))
     site = next((p for p in raiz if p.get("mimeType") == PASTA and norm(p["name"]) == nome_site), None)
 
+    hero, divisoes = [], []
     if site:
         print("Modo divisões (pasta «%s»)" % site["name"])
         hero, divisoes = modo_divisoes(s, site["id"], prep)
+        if not divisoes:
+            print("  ainda não há divisões com fotografias; mantém-se o modo lista")
+    if divisoes:
         todas = [dict(f, _div=d["pt"]) for d in divisoes for f in d["fotos"]]
         indice = {"modo": "divisoes", "hero": hero, "divisoes": divisoes}
     else:
