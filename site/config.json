@@ -10,8 +10,16 @@
   "assunto": "Casa da Madrinha — pedido de contacto pelo site"
  },
  "mapa": {
-  "bbox": [-8.92, 41.83, -8.76, 41.91],
+  "bbox": [
+   -8.92,
+   41.83,
+   -8.76,
+   41.91
+  ],
   "nota_aproximada": true
  },
- "indexar": false
+ "indexar": false,
+ "drive": {
+  "pasta_fotos": "1HRqZmQO9CeSVGFxxkseHG1sDsFtGl_Rn"
+ }
 }
