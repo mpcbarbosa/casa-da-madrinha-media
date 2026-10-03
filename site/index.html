@@ -101,7 +101,7 @@ dialog.lb button{background:rgba(255,255,255,.12);color:#fff;border:0;border-rad
 .icon-btn:disabled{opacity:.4;cursor:not-allowed}
 .months{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
 .month{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
-.month h3{font-size:1.1rem;margin:0 0 10px;text-transform:capitalize}
+.month h3{font-size:1.1rem;margin:0 0 10px}
 .dow,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
 .dow span{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:4px 0}
 .day{aspect-ratio:1;display:grid;place-items:center;border-radius:8px;font-size:.88rem;font-variant-numeric:tabular-nums;border:0;background:none;color:var(--ink);font-family:var(--ui);padding:0}
@@ -331,8 +331,8 @@ footer b{color:#EEF1EA;font-weight:600}
     <h2 id="h-faq" data-i18n="faq.title">Questions guests ask</h2>
     <div class="faq">
       <details><summary data-i18n="q1">What time is check-in and check-out?</summary><p data-i18n="a1">Check-in is from 16:00 and check-out is by 12:00.</p></details>
-      <details><summary data-i18n="q2">How do I book?</summary><p data-i18n="a2">Send us your dates through the form below and we will reply directly. You can also book through Airbnb or Booking.com.</p></details>
-      <details><summary data-i18n="q3">Is the calendar up to date?</summary><p data-i18n="a3">It is synchronised with our booking platforms every few hours. We always confirm availability when you contact us.</p></details>
+      <details><summary data-i18n="q2">How do I book?</summary><p data-i18n="a2">Send us your dates through the form below and we will reply directly. You can also book through Airbnb.</p></details>
+      <details><summary data-i18n="q3">Is the calendar up to date?</summary><p data-i18n="a3">It is synchronised with Airbnb every few hours. We always confirm availability when you contact us.</p></details>
       <details><summary data-i18n="q4">How many people can stay?</summary><p data-i18n="a4">The house has four bedrooms and sleeps up to eight guests.</p></details>
       <details><summary data-i18n="q5">Can I ask about parking, pets or something else?</summary><p data-i18n="a5">Of course. Write to us with your question and we will answer personally.</p></details>
     </div>
@@ -357,9 +357,8 @@ footer b{color:#EEF1EA;font-weight:600}
       <div class="form-foot"><button class="btn btn-primary" type="submit" id="f-send" data-i18n="f.send">Send request</button><p class="status" id="f-status" role="status" aria-live="polite"></p></div>
     </form>
     <div class="alt" id="alt" hidden>
-      <span data-i18n="c.alt">Prefer a booking platform?</span>
+      <span data-i18n="c.alt">Prefer to book on Airbnb?</span>
       <a class="btn btn-ghost" id="l-airbnb" href="#" target="_blank" rel="noopener" hidden>Airbnb</a>
-      <a class="btn btn-ghost" id="l-booking" href="#" target="_blank" rel="noopener" hidden>Booking.com</a>
     </div>
   </div>
 </section>
@@ -417,14 +416,14 @@ const T = {
   "arr.train.t":"De comboio","arr.train.d":"Caminha fica na linha do Minho, com comboios regulares para o Porto.",
   "faq.eyebrow":"Bom saber","faq.title":"Perguntas dos hóspedes",
   "q1":"A que horas é a entrada e a saída?","a1":"A entrada é a partir das 16:00 e a saída até às 12:00.",
-  "q2":"Como reservo?","a2":"Envie-nos as suas datas pelo formulário abaixo e respondemos diretamente. Também pode reservar pelo Airbnb ou pelo Booking.com.",
-  "q3":"O calendário está atualizado?","a3":"É sincronizado com as plataformas de reserva de poucas em poucas horas. Confirmamos sempre a disponibilidade quando nos contacta.",
+  "q2":"Como reservo?","a2":"Envie-nos as suas datas pelo formulário abaixo e respondemos diretamente. Também pode reservar pelo Airbnb.",
+  "q3":"O calendário está atualizado?","a3":"É sincronizado com o Airbnb de poucas em poucas horas. Confirmamos sempre a disponibilidade quando nos contacta.",
   "q4":"Quantas pessoas podem ficar?","a4":"A casa tem quatro quartos e recebe até oito pessoas.",
   "q5":"Posso perguntar sobre estacionamento, animais ou outra coisa?","a5":"Claro. Escreva-nos com a sua pergunta e respondemos pessoalmente.",
   "c.eyebrow":"Contacto","c.title":"Fale com o proprietário","c.lead":"Diga-nos as datas e quem vem. Respondemos pessoalmente.",
   "f.name":"Nome","f.email":"Email","f.in":"Chegada","f.out":"Partida","f.guests":"Pessoas","f.country":"País","f.msg":"Mensagem",
   "f.consent":"Usamos os seus dados apenas para responder a este pedido.","f.send":"Enviar pedido",
-  "c.alt":"Prefere uma plataforma de reservas?","foot.reg":"Registo de Alojamento Local"
+  "c.alt":"Prefere reservar pelo Airbnb?","foot.reg":"Registo de Alojamento Local"
  },
  msg:{
   en:{sync:"Availability last synchronised", nosync:"The live calendar is being connected. Send us your dates and we will confirm availability.",
@@ -475,12 +474,11 @@ function renderCal(){
   const box = document.getElementById("months"); if (!box) return;
   const n = perView(); box.innerHTML = "";
   const fmtM = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB", {month:"long", year:"numeric"});
-  const fmtD = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB", {weekday:"short"});
-  const dows = []; for (let i=0;i<7;i++){ dows.push(fmtD.format(new Date(2024,0,1+i))); } // 1 jan 2024 = segunda
+  const dows = lang === "pt" ? ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"] : ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
   for (let k=0;k<n;k++){
     const first = new Date(today.getFullYear(), today.getMonth()+offset+k, 1);
     const el = document.createElement("div"); el.className = "month";
-    let h = `<h3>${fmtM.format(first)}</h3><div class="dow">${dows.map(x=>`<span>${x.replace(".","")}</span>`).join("")}</div><div class="days">`;
+    const mt = fmtM.format(first); let h = `<h3>${mt.charAt(0).toUpperCase() + mt.slice(1)}</h3><div class="dow">${dows.map(x=>`<span>${x}</span>`).join("")}</div><div class="days">`;
     const lead = (first.getDay()+6)%7; for (let i=0;i<lead;i++) h += `<span></span>`;
     const days = new Date(first.getFullYear(), first.getMonth()+1, 0).getDate();
     for (let d=1; d<=days; d++){
@@ -557,7 +555,6 @@ fetch("config.json",{cache:"no-store"}).then(r => r.ok ? r.json() : {}).then(c =
   if (CFG.registo_al) document.getElementById("reg").textContent = CFG.registo_al;
   const L = CFG.links || {}; let any = false;
   if (L.airbnb) { const a = document.getElementById("l-airbnb"); a.href = L.airbnb; a.hidden = false; any = true; }
-  if (L.booking) { const a = document.getElementById("l-booking"); a.href = L.booking; a.hidden = false; any = true; }
   document.getElementById("alt").hidden = !any;
   const bb = (CFG.mapa && CFG.mapa.bbox) || [-8.92,41.83,-8.76,41.91];
   document.getElementById("map").src = `https://www.openstreetmap.org/export/embed.html?bbox=${bb.join("%2C")}&layer=mapnik`;
