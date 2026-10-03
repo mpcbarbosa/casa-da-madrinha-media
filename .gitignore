@@ -1,3 +1,6 @@
-# gerado na publicação a partir dos secrets iCal; nunca guardar no repositório
+# gerados na publicação; nunca guardar no repositório
 site/data/
+site/img/
+site/_revisao/
+.cache/
 __pycache__/
