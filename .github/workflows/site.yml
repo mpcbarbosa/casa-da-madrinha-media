@@ -20,7 +20,7 @@ concurrency:
 jobs:
   publicar:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -29,6 +29,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Dependencias
+        run: pip install -q pillow pillow-heif google-auth requests
+      - uses: actions/cache@v4
+        with:
+          path: .cache/fotos
+          key: fotos-${{ github.run_id }}
+          restore-keys: fotos-
+      - name: Fotografias (Google Drive, sem EXIF/GPS)
+        env:
+          GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
+        run: python site/tools/fotos.py
       - name: Sincronizar disponibilidade (iCal)
         env:
           ICAL_AIRBNB: ${{ secrets.ICAL_AIRBNB }}
