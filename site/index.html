@@ -14,7 +14,7 @@
 /* Mata e Maré — layout: página única, secções em faixa, conteúdo a 72rem */
 :root{
   --nevoa:#EEF1EA; --musgo:#1E2D24; --verde:#3F6248; --mare:#2C5A6B; --luz:#E6D3A3; --veu:#14201A;
-  --bg:var(--nevoa); --surface:#FFFFFF; --ink:var(--musgo); --muted:#4E5D53; --line:#D3DACF; --busy:#C9D2C6;
+  --bg:var(--nevoa); --surface:#FFFFFF; --ink:var(--musgo); --muted:#4E5D53; --line:#D3DACF; --busy:#E2E6E0;
   --disp:"Fraunces",Georgia,"Times New Roman",serif; --ui:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --r:12px; --w:72rem;
 }
@@ -108,14 +108,23 @@ dialog.lb button{background:rgba(255,255,255,.12);color:#fff;border:0;border-rad
 button.day{cursor:pointer}
 button.day:hover{background:rgba(63,98,72,.12)}
 .day.past{color:#A7B1A9}
-.day.busy{background:var(--busy);color:#6F7A72;text-decoration:line-through}
+.day.busy{background:var(--busy);color:#8E998F;text-decoration:line-through}
 .day.sel,.day.edge{background:var(--verde);color:#fff}
-.day.range{background:rgba(63,98,72,.18)}
+.day.range{background:rgba(63,98,72,.28);color:var(--musgo);font-weight:600}
 .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.85rem;color:var(--muted);margin-top:14px}
 .legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px;border:1px solid var(--line)}
 .sel-box{margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
 .sel-box p{margin:0;flex:1 1 240px}
 .sync{font-size:.82rem;color:var(--muted);margin-top:10px}
+
+/* pedido de orçamento */
+.quote{margin-top:18px;background:var(--musgo);color:#EEF1EA;border-radius:var(--r);padding:24px}
+.quote h3{color:#fff;font-size:1.5rem}
+.quote .q-sum{display:flex;flex-wrap:wrap;gap:8px 18px;margin:10px 0 0;padding:0;list-style:none;color:var(--luz);font-weight:500}
+.quote form{margin-top:18px;max-width:none;grid-template-columns:repeat(4,minmax(0,1fr))}
+.quote .f.half{grid-column:span 2}
+.quote .f.full{grid-column:1/-1}
+@media (max-width:760px){.quote form{grid-template-columns:repeat(2,minmax(0,1fr))}.quote .f.half{grid-column:1/-1}}
 
 /* zona */
 .places{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:32px}
@@ -171,7 +180,7 @@ footer b{color:#EEF1EA;font-weight:600}
 
 @media (max-width:640px){
   section{padding-block:56px}
-  form{grid-template-columns:1fr}
+  .contact form{grid-template-columns:1fr}
   .spec b{font-size:1.6rem}
 }
 </style>
@@ -225,8 +234,8 @@ footer b{color:#EEF1EA;font-weight:600}
       <li data-i18n="fact.bbq">Garden and barbecue</li>
     </ul>
     <div class="btns">
-      <a class="btn btn-primary" href="#availability" data-i18n="cta.dates">Check dates</a>
-      <a class="btn btn-ghost" href="#contact" data-i18n="cta.contact">Contact the owner</a>
+      <a class="btn btn-primary" href="#availability" data-i18n="cta.dates">Check dates and get a quote</a>
+      <a class="btn btn-ghost" href="#contact" data-i18n="cta.contact">Ask a question</a>
     </div>
   </div>
 </section>
@@ -265,7 +274,7 @@ footer b{color:#EEF1EA;font-weight:600}
   <div class="wrap">
     <p class="eyebrow" data-i18n="av.eyebrow">Availability</p>
     <h2 id="h-av" data-i18n="av.title">Choose your dates</h2>
-    <p class="lead" data-i18n="av.lead">Tap your arrival day and then your departure day. We will confirm availability and send you the details directly.</p>
+    <p class="lead" data-i18n="av.lead">Tap your arrival day and then your departure day, tell us who is coming and send your request. The owner replies directly with availability and a quote.</p>
     <div class="cal-head">
       <div class="legend" aria-hidden="false">
         <span><i style="background:var(--surface)"></i><span data-i18n="av.free">Available</span></span>
@@ -280,10 +289,25 @@ footer b{color:#EEF1EA;font-weight:600}
     <div class="months" id="months"></div>
     <div class="sel-box" id="sel-box" hidden>
       <p id="sel-text"></p>
-      <a class="btn btn-dark" href="#contact" data-i18n="av.ask">Ask about these dates</a>
       <button class="btn btn-line" type="button" id="sel-clear" data-i18n="av.clear">Clear</button>
     </div>
     <p class="sync" id="sync"></p>
+    <div class="quote" id="quote" hidden>
+      <h3 data-i18n="q.title">Request a quote for these dates</h3>
+      <ul class="q-sum"><li id="q-dates"></li><li id="q-nights"></li></ul>
+      <form id="q-form" novalidate>
+        <div class="f"><label for="q-adults" data-i18n="q.adults">Adults</label><select id="q-adults" name="adults"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
+        <div class="f"><label for="q-kids" data-i18n="q.kids">Children</label><select id="q-kids" name="children"><option selected>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></div>
+        <div class="f half"><label for="q-name" data-i18n="f.name">Name</label><input id="q-name" name="name" autocomplete="name" required></div>
+        <div class="f half"><label for="q-email" data-i18n="f.email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="f"><label for="q-phone" data-i18n="q.phone">Phone (optional)</label><input id="q-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <div class="f"><label for="q-country" data-i18n="f.country">Country</label><input id="q-country" name="country" autocomplete="country-name"></div>
+        <div class="f full"><label for="q-msg" data-i18n="q.msg">Anything we should know? (optional)</label><textarea id="q-msg" name="message"></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="q-hp">Leave empty</label><input id="q-hp" name="botcheck" tabindex="-1" autocomplete="off"></div>
+        <p class="consent" data-i18n="f.consent">We use your details only to answer this request.</p>
+        <div class="form-foot"><button class="btn btn-primary" type="submit" id="q-send" data-i18n="q.send">Send quote request</button><p class="status" id="q-status" role="status" aria-live="polite"></p></div>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -331,7 +355,7 @@ footer b{color:#EEF1EA;font-weight:600}
     <h2 id="h-faq" data-i18n="faq.title">Questions guests ask</h2>
     <div class="faq">
       <details><summary data-i18n="q1">What time is check-in and check-out?</summary><p data-i18n="a1">Check-in is from 16:00 and check-out is by 12:00.</p></details>
-      <details><summary data-i18n="q2">How do I book?</summary><p data-i18n="a2">Send us your dates through the form below and we will reply directly. You can also book through Airbnb.</p></details>
+      <details><summary data-i18n="q2">How do I book?</summary><p data-i18n="a2">Choose your dates in the calendar and send a quote request; the owner replies directly. You can also book through Airbnb.</p></details>
       <details><summary data-i18n="q3">Is the calendar up to date?</summary><p data-i18n="a3">It is synchronised with Airbnb every few hours. We always confirm availability when you contact us.</p></details>
       <details><summary data-i18n="q4">How many people can stay?</summary><p data-i18n="a4">The house has four bedrooms and sleeps up to eight guests.</p></details>
       <details><summary data-i18n="q5">Can I ask about parking, pets or something else?</summary><p data-i18n="a5">Of course. Write to us with your question and we will answer personally.</p></details>
@@ -342,19 +366,15 @@ footer b{color:#EEF1EA;font-weight:600}
 <section class="contact" aria-labelledby="h-contact" id="contact">
   <div class="wrap">
     <p class="eyebrow" data-i18n="c.eyebrow">Contact</p>
-    <h2 id="h-contact" data-i18n="c.title">Talk to the owner</h2>
-    <p class="lead" data-i18n="c.lead">Tell us your dates and who is coming. We reply personally.</p>
+    <h2 id="h-contact" data-i18n="c.title">Any questions?</h2>
+    <p class="lead" data-i18n="c.lead">Write to the owner about anything that is not on this page. To ask for a quote, choose your dates in the calendar above.</p>
     <form id="form" novalidate>
       <div class="f"><label for="f-name" data-i18n="f.name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
       <div class="f"><label for="f-email" data-i18n="f.email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="f"><label for="f-in" data-i18n="f.in">Arrival</label><input id="f-in" name="arrival" type="date"></div>
-      <div class="f"><label for="f-out" data-i18n="f.out">Departure</label><input id="f-out" name="departure" type="date"></div>
-      <div class="f"><label for="f-guests" data-i18n="f.guests">Guests</label><select id="f-guests" name="guests"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
-      <div class="f"><label for="f-country" data-i18n="f.country">Country</label><input id="f-country" name="country" autocomplete="country-name"></div>
       <div class="f full"><label for="f-msg" data-i18n="f.msg">Message</label><textarea id="f-msg" name="message"></textarea></div>
       <div class="hp" aria-hidden="true"><label for="f-hp">Leave empty</label><input id="f-hp" name="botcheck" tabindex="-1" autocomplete="off"></div>
       <p class="consent" data-i18n="f.consent">We use your details only to answer this request.</p>
-      <div class="form-foot"><button class="btn btn-primary" type="submit" id="f-send" data-i18n="f.send">Send request</button><p class="status" id="f-status" role="status" aria-live="polite"></p></div>
+      <div class="form-foot"><button class="btn btn-primary" type="submit" id="f-send" data-i18n="f.send">Send message</button><p class="status" id="f-status" role="status" aria-live="polite"></p></div>
     </form>
     <div class="alt" id="alt" hidden>
       <span data-i18n="c.alt">Prefer to book on Airbnb?</span>
@@ -384,7 +404,7 @@ const T = {
   "hero.eyebrow":"Caminha · Alto Minho · Portugal",
   "hero.text":"Uma casa espaçosa, com piscina, jardim e vistas largas, onde o rio Minho encontra o Atlântico.",
   "fact.bedrooms":"4 quartos","fact.guests":"Até 8 pessoas","fact.pool":"Piscina privada","fact.bbq":"Jardim e churrasqueira",
-  "cta.dates":"Ver datas","cta.contact":"Falar com o proprietário",
+  "cta.dates":"Ver datas e pedir orçamento","cta.contact":"Fazer uma pergunta",
   "house.eyebrow":"A casa","house.title":"Espaço para respirar, até oito pessoas",
   "house.lead":"Uma casa de família feita para almoços longos no jardim, tardes calmas junto à piscina e noites à volta da churrasqueira, com as vistas do Alto Minho em redor.",
   "h.space.t":"Casa espaçosa","h.space.d":"Quatro quartos e salas amplas, para cada um ter o seu espaço.",
@@ -395,7 +415,7 @@ const T = {
   "house.glance":"Em resumo","spec.bedrooms":"quartos","spec.guests":"pessoas","spec.checkin":"entrada a partir das","spec.checkout":"saída até às",
   "gallery.soon":"As fotografias de cada divisão estão a caminho. Entretanto, pergunte-nos o que quiser sobre a casa.",
   "av.eyebrow":"Disponibilidade","av.title":"Escolha as suas datas",
-  "av.lead":"Toque no dia de chegada e depois no dia de partida. Confirmamos a disponibilidade e respondemos diretamente.",
+  "av.lead":"Toque no dia de chegada e depois no dia de partida, diga-nos quem vem e envie o pedido. O proprietário responde diretamente com a disponibilidade e o orçamento.",
   "av.free":"Livre","av.busy":"Ocupado","av.sel":"As suas datas","av.ask":"Perguntar por estas datas","av.clear":"Limpar",
   "area.eyebrow":"A região","area.title":"Onde o Minho encontra o Atlântico",
   "area.lead":"Caminha fica no extremo norte de Portugal, entre o rio, o oceano e a serra, com a Galiza na outra margem.",
@@ -416,25 +436,25 @@ const T = {
   "arr.train.t":"De comboio","arr.train.d":"Caminha fica na linha do Minho, com comboios regulares para o Porto.",
   "faq.eyebrow":"Bom saber","faq.title":"Perguntas dos hóspedes",
   "q1":"A que horas é a entrada e a saída?","a1":"A entrada é a partir das 16:00 e a saída até às 12:00.",
-  "q2":"Como reservo?","a2":"Envie-nos as suas datas pelo formulário abaixo e respondemos diretamente. Também pode reservar pelo Airbnb.",
+  "q2":"Como reservo?","a2":"Escolha as datas no calendário e envie o pedido de orçamento; o proprietário responde diretamente. Também pode reservar pelo Airbnb.",
   "q3":"O calendário está atualizado?","a3":"É sincronizado com o Airbnb de poucas em poucas horas. Confirmamos sempre a disponibilidade quando nos contacta.",
   "q4":"Quantas pessoas podem ficar?","a4":"A casa tem quatro quartos e recebe até oito pessoas.",
   "q5":"Posso perguntar sobre estacionamento, animais ou outra coisa?","a5":"Claro. Escreva-nos com a sua pergunta e respondemos pessoalmente.",
-  "c.eyebrow":"Contacto","c.title":"Fale com o proprietário","c.lead":"Diga-nos as datas e quem vem. Respondemos pessoalmente.",
-  "f.name":"Nome","f.email":"Email","f.in":"Chegada","f.out":"Partida","f.guests":"Pessoas","f.country":"País","f.msg":"Mensagem",
-  "f.consent":"Usamos os seus dados apenas para responder a este pedido.","f.send":"Enviar pedido",
+  "c.eyebrow":"Contacto","c.title":"Tem alguma pergunta?","c.lead":"Escreva ao proprietário sobre o que não encontrar nesta página. Para pedir um orçamento, escolha as datas no calendário acima.",
+  "f.name":"Nome","f.email":"Email","f.country":"País","f.msg":"Mensagem",
+  "f.consent":"Usamos os seus dados apenas para responder a este pedido.","f.send":"Enviar mensagem","q.title":"Pedir orçamento para estas datas","q.adults":"Adultos","q.kids":"Crianças","q.phone":"Telefone (opcional)","q.msg":"Algo que devamos saber? (opcional)","q.send":"Enviar pedido de orçamento",
   "c.alt":"Prefere reservar pelo Airbnb?","foot.reg":"Registo de Alojamento Local"
  },
  msg:{
   en:{sync:"Availability last synchronised", nosync:"The live calendar is being connected. Send us your dates and we will confirm availability.",
       sel1:"Arrival", sel2:"now choose your departure day.", nights:n=>n===1?"1 night":n+" nights", busyIn:"Some of these days are already booked. Please choose other dates.",
-      sending:"Sending…", ok:"Thank you. Your request has been sent and we will reply soon.", err:"The message could not be sent. Please try again in a moment.",
-      need:"Please fill in your name and a valid email.", off:"The contact form is being set up. Please come back soon.",
+      sending:"Sending…", ok:"Thank you. Your message has been sent and the owner will reply by email.", err:"The message could not be sent. Please try again in a moment.",
+      need:"Please fill in your name and a valid email.", kids:"The house sleeps up to 8 guests in total.", qok:"Thank you. Your request has been sent to the owner, who will reply by email with availability and a quote.", off:"The contact form is being set up. Please come back soon.",
       prev:"Previous months", next:"Next months", dates:"Dates"},
   pt:{sync:"Disponibilidade sincronizada em", nosync:"O calendário está a ser ligado. Envie-nos as suas datas e confirmamos a disponibilidade.",
       sel1:"Chegada", sel2:"escolha agora o dia de partida.", nights:n=>n===1?"1 noite":n+" noites", busyIn:"Alguns destes dias já estão ocupados. Escolha outras datas, por favor.",
-      sending:"A enviar…", ok:"Obrigado. O pedido foi enviado e respondemos em breve.", err:"Não foi possível enviar a mensagem. Tente novamente daqui a pouco.",
-      need:"Preencha o nome e um email válido, por favor.", off:"O formulário está a ser configurado. Volte em breve, por favor.",
+      sending:"A enviar…", ok:"Obrigado. A mensagem foi enviada e o proprietário responde por email.", err:"Não foi possível enviar a mensagem. Tente novamente daqui a pouco.",
+      need:"Preencha o nome e um email válido, por favor.", kids:"A casa recebe até 8 pessoas no total.", qok:"Obrigado. O pedido foi enviado ao proprietário, que responde por email com a disponibilidade e o orçamento.", off:"O formulário está a ser configurado. Volte em breve, por favor.",
       prev:"Meses anteriores", next:"Meses seguintes", dates:"Datas"}
  }
 };
@@ -508,10 +528,9 @@ document.getElementById("months").addEventListener("click", e => {
   } else {
     if (!rangeFree(start, d)) { setMsg(M().busyIn); return; }
     end = d;
-    document.getElementById("f-in").value = iso(start);
-    document.getElementById("f-out").value = iso(end);
   }
   renderCal(); renderSel();
+  if (end) { const q = document.getElementById("quote"); q.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block:"nearest"}); setTimeout(() => document.getElementById("q-adults").focus({preventScroll:true}), 350); }
 });
 document.getElementById("prev").addEventListener("click", () => { offset = Math.max(0, offset - perView()); renderCal(); });
 document.getElementById("next").addEventListener("click", () => { offset = Math.min(MAXM, offset + perView()); renderCal(); });
@@ -524,13 +543,16 @@ function renderSel(keep){
   const box = document.getElementById("sel-box"), txt = document.getElementById("sel-text");
   const f = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB",{day:"numeric",month:"short",year:"numeric"});
   if (!keep) selMsg = "";
-  if (selMsg) { box.hidden = false; txt.textContent = selMsg; box.querySelector("a").hidden = true; return; }
-  box.querySelector("a").hidden = !end;
+  const q = document.getElementById("quote");
+  q.hidden = !(start && end);
+  if (selMsg) { box.hidden = false; txt.textContent = selMsg; return; }
   if (!start) { box.hidden = true; return; }
   box.hidden = false;
   if (!end) { txt.textContent = `${M().sel1}: ${f.format(start)} — ${M().sel2}`; return; }
   const n = Math.round((end - start) / 864e5);
   txt.textContent = `${f.format(start)} → ${f.format(end)} · ${M().nights(n)}`;
+  document.getElementById("q-dates").textContent = `${f.format(start)} → ${f.format(end)}`;
+  document.getElementById("q-nights").textContent = M().nights(n);
 }
 
 function renderSync(){
@@ -558,32 +580,60 @@ fetch("config.json",{cache:"no-store"}).then(r => r.ok ? r.json() : {}).then(c =
   document.getElementById("alt").hidden = !any;
   const bb = (CFG.mapa && CFG.mapa.bbox) || [-8.92,41.83,-8.76,41.91];
   document.getElementById("map").src = `https://www.openstreetmap.org/export/embed.html?bbox=${bb.join("%2C")}&layer=mapnik`;
-  if (!(CFG.contacto && CFG.contacto.web3forms_key)) document.getElementById("f-status").textContent = "";
 }).catch(() => {});
 
-// ---------- formulário ----------
+// ---------- formulários (Web3Forms → email do proprietário) ----------
+const okEmail = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+async function enviar(campos, st, btn, okMsg){
+  const key = CFG.contacto && CFG.contacto.web3forms_key;
+  if (!key) { st.textContent = M().off; return false; }
+  btn.disabled = true; st.textContent = M().sending;
+  try {
+    const r = await fetch("https://api.web3forms.com/submit", {method:"POST", headers:{"Content-Type":"application/json", Accept:"application/json"},
+      body: JSON.stringify({access_key: key, from_name: "Casa da Madrinha · site", ...campos})});
+    const j = await r.json().catch(() => ({}));
+    const ok = r.ok && j.success !== false;
+    st.textContent = ok ? okMsg : M().err;
+    return ok;
+  } catch(err) { st.textContent = M().err; return false; }
+  finally { btn.disabled = false; }
+}
+
+document.getElementById("q-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const st = document.getElementById("q-status"), btn = document.getElementById("q-send");
+  const fd = new FormData(e.target);
+  if (fd.get("botcheck")) return;
+  const name = (fd.get("name")||"").trim(), email = (fd.get("email")||"").trim();
+  if (!name || !okEmail(email)) { st.textContent = M().need; return; }
+  const ad = +fd.get("adults"), ki = +fd.get("children");
+  if (ad + ki > 8) { st.textContent = M().kids; return; }
+  if (!(start && end)) return;
+  const fpt = new Intl.DateTimeFormat("pt-PT",{weekday:"short", day:"numeric", month:"long", year:"numeric"});
+  const n = Math.round((end - start) / 864e5);
+  const ok = await enviar({
+    subject: `Pedido de orçamento: ${iso(start)} a ${iso(end)} (${n} noites, ${ad + ki} pessoas)`,
+    "Chegada": fpt.format(start), "Partida": fpt.format(end), "Noites": n,
+    "Adultos": ad, "Crianças": ki, "Nome": name, email, replyto: email,
+    "Telefone": (fd.get("phone")||"").trim() || "-", "País": (fd.get("country")||"").trim() || "-",
+    "Mensagem": (fd.get("message")||"").trim() || "-", "Idioma do visitante": lang === "pt" ? "Português" : "Inglês"
+  }, st, btn, M().qok);
+  if (ok) { e.target.reset(); }
+});
+
 document.getElementById("form").addEventListener("submit", async e => {
   e.preventDefault();
   const st = document.getElementById("f-status"), btn = document.getElementById("f-send");
   const fd = new FormData(e.target);
   if (fd.get("botcheck")) return;
   const name = (fd.get("name")||"").trim(), email = (fd.get("email")||"").trim();
-  if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { st.textContent = M().need; return; }
-  const key = CFG.contacto && CFG.contacto.web3forms_key;
-  if (!key) { st.textContent = M().off; return; }
-  btn.disabled = true; st.textContent = M().sending;
-  const body = {
-    access_key: key, subject: (CFG.contacto && CFG.contacto.assunto) || "Casa da Madrinha", from_name: "Casa da Madrinha · site",
-    name, email, replyto: email, arrival: fd.get("arrival") || "-", departure: fd.get("departure") || "-",
-    guests: fd.get("guests"), country: fd.get("country") || "-", message: fd.get("message") || "-", language: lang
-  };
-  try {
-    const r = await fetch("https://api.web3forms.com/submit", {method:"POST", headers:{"Content-Type":"application/json", Accept:"application/json"}, body: JSON.stringify(body)});
-    const j = await r.json().catch(() => ({}));
-    if (r.ok && j.success !== false) { st.textContent = M().ok; e.target.reset(); start = end = null; renderCal(); renderSel(); }
-    else st.textContent = M().err;
-  } catch(err) { st.textContent = M().err; }
-  btn.disabled = false;
+  if (!name || !okEmail(email)) { st.textContent = M().need; return; }
+  const ok = await enviar({
+    subject: "Pergunta pelo site da Casa da Madrinha",
+    "Nome": name, email, replyto: email, "Mensagem": (fd.get("message")||"").trim() || "-",
+    "Idioma do visitante": lang === "pt" ? "Português" : "Inglês"
+  }, st, btn, M().ok);
+  if (ok) e.target.reset();
 });
 
 
