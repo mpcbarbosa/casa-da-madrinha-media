@@ -84,6 +84,16 @@ section+section{border-top:1px solid var(--line)}
 .gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block}
 .soon{margin-top:28px;border:1px dashed var(--line);border-radius:var(--r);padding:18px;color:var(--muted);font-size:.95rem;background:rgba(255,255,255,.5)}
 
+.gallery button{padding:0;border:0;background:none;cursor:zoom-in;border-radius:10px;overflow:hidden;display:block}
+.gallery figure{margin:0}
+.gallery figcaption{font-size:.8rem;color:var(--muted);margin-top:4px}
+dialog.lb{border:0;padding:0;background:transparent;max-width:min(96vw,1400px);max-height:92vh}
+dialog.lb::backdrop{background:rgba(20,32,26,.88)}
+dialog.lb img{display:block;max-width:100%;max-height:86vh;width:auto;height:auto;border-radius:8px}
+dialog.lb .lb-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#EEF1EA;padding:8px 2px;font-size:.9rem}
+dialog.lb button{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:999px;padding:8px 14px;font:500 .9rem var(--ui);cursor:pointer}
+.hero .art img{position:absolute;inset:0}
+
 /* calendário */
 .cal-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:30px 0 14px}
 .cal-nav{display:flex;gap:8px}
@@ -244,10 +254,10 @@ footer b{color:#EEF1EA;font-weight:600}
         </div>
       </div>
       <div>
-        <div class="gallery" id="gallery" hidden></div>
         <p class="soon" id="gallery-soon" data-i18n="gallery.soon">Photos of every room are on their way. In the meantime, ask us anything about the house.</p>
       </div>
     </div>
+    <div class="gallery" id="gallery" hidden></div>
   </div>
 </section>
 
@@ -355,6 +365,11 @@ footer b{color:#EEF1EA;font-weight:600}
 </section>
 </main>
 
+<dialog class="lb" id="lb" aria-label="Photo">
+  <img id="lb-img" alt="">
+  <div class="lb-bar"><span id="lb-cap"></span><span><button type="button" id="lb-prev" aria-label="Previous">‹</button> <button type="button" id="lb-next" aria-label="Next">›</button> <button type="button" id="lb-close">✕</button></span></div>
+</dialog>
+
 <footer>
   <div class="wrap">
     <span><b>Casa da Madrinha</b> · Caminha, Portugal</span>
@@ -438,7 +453,7 @@ function applyLang(l){
   document.getElementById("prev").setAttribute("aria-label", M().prev);
   document.getElementById("next").setAttribute("aria-label", M().next);
   try { localStorage.setItem("cm-lang", l); } catch(e) {}
-  renderCal(); renderSync(); renderSel();
+  renderCal(); renderSync(); renderSel(); if (typeof renderGallery === 'function' && GAL.length) renderGallery();
 }
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
 
@@ -572,6 +587,44 @@ document.getElementById("form").addEventListener("submit", async e => {
     else st.textContent = M().err;
   } catch(err) { st.textContent = M().err; }
   btn.disabled = false;
+});
+
+
+// ---------- fotografias ----------
+let GAL = [];
+function srcset(f){ return Object.entries(f.srcs).map(([w,n]) => `img/${n} ${w}w`).join(", "); }
+function maior(f){ const k = Object.keys(f.srcs).map(Number).sort((a,b)=>b-a)[0]; return "img/" + f.srcs[String(k)]; }
+function altOf(g){ return (lang === "pt" ? g.alt_pt : g.alt_en) || g.alt_en || "Casa da Madrinha"; }
+function renderGallery(){
+  const box = document.getElementById("gallery");
+  if (!GAL.length) { box.hidden = true; document.getElementById("gallery-soon").hidden = false; return; }
+  document.getElementById("gallery-soon").hidden = true; box.hidden = false;
+  box.innerHTML = GAL.map((g,i) => `<figure><button type="button" data-i="${i}"><img loading="lazy" decoding="async" srcset="${srcset(g.f)}" sizes="(min-width:900px) 25vw, (min-width:600px) 33vw, 50vw" src="img/${g.f.srcs[Object.keys(g.f.srcs)[0]]}" alt="${altOf(g).replace(/"/g,"&quot;")}" width="${g.f.w}" height="${g.f.h}"></button></figure>`).join("");
+}
+let lbI = 0;
+function openLb(i){ lbI = (i + GAL.length) % GAL.length; const g = GAL[lbI], im = document.getElementById("lb-img");
+  im.src = maior(g.f); im.alt = altOf(g); document.getElementById("lb-cap").textContent = altOf(g);
+  const d = document.getElementById("lb"); if (!d.open) d.showModal(); }
+document.getElementById("gallery").addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) openLb(+b.dataset.i); });
+document.getElementById("lb-close").addEventListener("click", () => document.getElementById("lb").close());
+document.getElementById("lb-prev").addEventListener("click", () => openLb(lbI - 1));
+document.getElementById("lb-next").addEventListener("click", () => openLb(lbI + 1));
+document.getElementById("lb").addEventListener("keydown", e => { if (e.key === "ArrowLeft") openLb(lbI - 1); if (e.key === "ArrowRight") openLb(lbI + 1); });
+document.getElementById("lb").addEventListener("click", e => { if (e.target.id === "lb") e.target.close(); });
+
+Promise.all([
+  fetch("img/fotos.json",{cache:"no-store"}).then(r => r.ok ? r.json() : null).catch(() => null),
+  fetch("content/galeria.json",{cache:"no-store"}).then(r => r.ok ? r.json() : null).catch(() => null)
+]).then(([idx, gal]) => {
+  if (!idx || !gal) return;
+  const by = {}; (idx.fotos||[]).forEach(f => { by[f.nome] = f; by[f.id] = f; });
+  GAL = (gal.fotos||[]).map(g => ({...g, f: by[g.foto]})).filter(g => g.f);
+  const h = gal.hero && by[gal.hero];
+  if (h) {
+    const art = document.getElementById("hero-art");
+    art.innerHTML = `<img srcset="${srcset(h)}" sizes="100vw" src="${maior(h)}" alt="" fetchpriority="high">`;
+  }
+  renderGallery();
 });
 
 applyLang(lang);
