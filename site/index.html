@@ -562,7 +562,7 @@ function renderSync(){
   el.textContent = `${M().sync}: ${t.toLocaleString(lang === "pt" ? "pt-PT" : "en-GB",{dateStyle:"medium",timeStyle:"short"})}.`;
 }
 
-fetch("data/disponibilidade.json",{cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => {
+fetch("data/disponibilidade.json?t=" + Date.now(),{cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => {
   if (d) {
     syncInfo = d;
     (d.ocupado||[]).forEach(o => { for (let x = parse(o.inicio), e = parse(o.fim); x < e; x = addDays(x,1)) busy.add(iso(x)); });
@@ -572,7 +572,8 @@ fetch("data/disponibilidade.json",{cache:"no-store"}).then(r => r.ok ? r.json() 
 
 // ---------- configuração ----------
 let CFG = {};
-fetch("config.json",{cache:"no-store"}).then(r => r.ok ? r.json() : {}).then(c => {
+const loadCfg = () => fetch("config.json?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.json() : null).catch(() => null);
+loadCfg().then(c => {
   CFG = c || {};
   if (CFG.registo_al) document.getElementById("reg").textContent = CFG.registo_al;
   const L = CFG.links || {}; let any = false;
@@ -585,7 +586,8 @@ fetch("config.json",{cache:"no-store"}).then(r => r.ok ? r.json() : {}).then(c =
 // ---------- formulários (Web3Forms → email do proprietário) ----------
 const okEmail = v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
 async function enviar(campos, st, btn, okMsg){
-  const key = CFG.contacto && CFG.contacto.web3forms_key;
+  let key = CFG.contacto && CFG.contacto.web3forms_key;
+  if (!key) { const c = await loadCfg(); if (c) { CFG = c; key = c.contacto && c.contacto.web3forms_key; } }
   if (!key) { st.textContent = M().off; return false; }
   btn.disabled = true; st.textContent = M().sending;
   try {
