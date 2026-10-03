@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Casa da Madrinha · Caminha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=DM+Sans:wght@400;500&display=swap">
+<style>
+:root{--bg:#EEF1EA;--ink:#1E2D24;--acc:#3F6248;--muted:#4f5d54}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;padding:24px;box-sizing:border-box}
+main{max-width:34rem;text-align:left}
+h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.05;margin:0 0 12px}
+p{color:var(--muted);line-height:1.6;margin:0 0 10px}
+.k{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--acc)}
+#sync{font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<p class="k">Caminha · Alto Minho · Portugal</p>
+<h1>Casa da Madrinha</h1>
+<p>A house with a pool, a garden and room for eight, where the Minho river meets the Atlantic. Our new website is on its way.</p>
+<p id="sync"></p>
+</main>
+<script>
+fetch("data/disponibilidade.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d)return;
+  const t=new Date(d.atualizado);
+  document.getElementById("sync").textContent="Availability last synced: "+t.toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"})+".";
+}).catch(()=>{});
+</script>
+</body>
+</html>
