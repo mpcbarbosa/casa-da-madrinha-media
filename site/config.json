@@ -1,0 +1,17 @@
+{
+ "nome": "Casa da Madrinha",
+ "registo_al": "AL99123",
+ "links": {
+  "airbnb": "",
+  "booking": ""
+ },
+ "contacto": {
+  "web3forms_key": "",
+  "assunto": "Casa da Madrinha — pedido de contacto pelo site"
+ },
+ "mapa": {
+  "bbox": [-8.92, 41.83, -8.76, 41.91],
+  "nota_aproximada": true
+ },
+ "indexar": false
+}
