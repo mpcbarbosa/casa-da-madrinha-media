@@ -93,6 +93,41 @@ dialog.lb img{display:block;max-width:100%;max-height:86vh;width:auto;height:aut
 dialog.lb .lb-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#EEF1EA;padding:8px 2px;font-size:.9rem}
 dialog.lb button{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:999px;padding:8px 14px;font:500 .9rem var(--ui);cursor:pointer}
 .hero .art img{position:absolute;inset:0}
+.hero .art img.sl{opacity:0;transition:opacity 1.4s ease}
+.hero .art img.sl.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.hero .art img.sl{transition:none}}
+.hero-dots{position:absolute;z-index:3;right:max(20px,env(safe-area-inset-right,0px));bottom:22px;display:flex;gap:4px}
+.hero-dots button{width:24px;height:24px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.hero-dots button::after{content:"";width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);transition:background .2s,transform .2s}
+.hero-dots button[aria-current="true"]::after{background:#fff;transform:scale(1.25)}
+
+/* fotografias por divisão */
+.rooms-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:56px}
+.rooms-head h3{font-size:1.6rem}
+.rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:28px 22px;margin-top:22px}
+.room{margin:0}
+.room .pair{display:grid;grid-template-columns:1fr 1fr;gap:6px;border-radius:12px;overflow:hidden}
+.room .pair.one{grid-template-columns:1fr}
+.room .pair button{padding:0;border:0;background:var(--busy);cursor:zoom-in;display:block}
+.room .pair img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .5s ease}
+.room .pair.one img{aspect-ratio:2.035/1}
+.room .pair button:hover img{transform:scale(1.03)}
+.room-foot{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:10px}
+.room-foot h4{font-family:var(--disp);font-weight:600;font-size:1.2rem;margin:0}
+.linkbtn{background:none;border:0;padding:4px 0;color:var(--mare);font:500 .92rem var(--ui);cursor:pointer;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+dialog.rg{border:0;padding:0;width:100%;max-width:100%;height:100%;max-height:100%;margin:0;background:var(--bg);color:var(--ink)}
+dialog.rg::backdrop{background:rgba(20,32,26,.6)}
+.rg-top{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--line)}
+.rg-top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px}
+.rg-top h2{font-size:1.5rem}
+.rg-close{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.1rem;cursor:pointer;flex:none}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 20px 14px;max-width:var(--w);margin:0 auto;scrollbar-width:thin}
+.chips button{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 14px;font:500 .9rem var(--ui);cursor:pointer;min-height:40px}
+.chips button[aria-pressed="true"]{background:var(--musgo);border-color:var(--musgo);color:#fff}
+.chips small{opacity:.7;margin-left:4px;font-variant-numeric:tabular-nums}
+.rg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(45%,260px),1fr));gap:8px;padding-block:22px 48px}
+.rg-grid button{padding:0;border:0;background:var(--busy);border-radius:10px;overflow:hidden;cursor:zoom-in;display:block}
+.rg-grid img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block}
 
 /* calendário */
 .cal-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:30px 0 14px}
@@ -267,6 +302,13 @@ footer b{color:#EEF1EA;font-weight:600}
       </div>
     </div>
     <div class="gallery" id="gallery" hidden></div>
+    <div id="rooms-box" hidden>
+      <div class="rooms-head">
+        <h3 data-i18n="rooms.title">The house, room by room</h3>
+        <button type="button" class="btn btn-line" id="rooms-all" data-i18n="rooms.all">See all photos</button>
+      </div>
+      <div class="rooms" id="rooms"></div>
+    </div>
   </div>
 </section>
 
@@ -384,6 +426,14 @@ footer b{color:#EEF1EA;font-weight:600}
 </section>
 </main>
 
+<dialog class="rg" id="rg" aria-labelledby="rg-title">
+  <div class="rg-top">
+    <div class="wrap"><h2 id="rg-title" data-i18n="rooms.dlg">Photos of the house</h2><button type="button" class="rg-close" id="rg-close" aria-label="Close">✕</button></div>
+    <nav class="chips" id="rg-chips" aria-label="Rooms"></nav>
+  </div>
+  <div class="wrap"><div class="rg-grid" id="rg-grid"></div></div>
+</dialog>
+
 <dialog class="lb" id="lb" aria-label="Photo">
   <img id="lb-img" alt="">
   <div class="lb-bar"><span id="lb-cap"></span><span><button type="button" id="lb-prev" aria-label="Previous">‹</button> <button type="button" id="lb-next" aria-label="Next">›</button> <button type="button" id="lb-close">✕</button></span></div>
@@ -413,6 +463,7 @@ const T = {
   "h.garden.t":"Jardim","h.garden.d":"Espaço exterior para as crianças brincarem e para mesas que se prolongam.",
   "h.bbq.t":"Churrasqueira","h.bbq.d":"Acenda o grelhador para noites lá fora com família e amigos.",
   "house.glance":"Em resumo","spec.bedrooms":"quartos","spec.guests":"pessoas","spec.checkin":"entrada a partir das","spec.checkout":"saída até às",
+  "rooms.title":"A casa, divisão a divisão","rooms.all":"Ver todas as fotografias","rooms.dlg":"Fotografias da casa",
   "gallery.soon":"As fotografias de cada divisão estão a caminho. Entretanto, pergunte-nos o que quiser sobre a casa.",
   "av.eyebrow":"Disponibilidade","av.title":"Escolha as suas datas",
   "av.lead":"Toque no dia de chegada e depois no dia de partida, diga-nos quem vem e envie o pedido. O proprietário responde diretamente com a disponibilidade e o orçamento.",
@@ -450,12 +501,14 @@ const T = {
       sel1:"Arrival", sel2:"now choose your departure day.", nights:n=>n===1?"1 night":n+" nights", busyIn:"Some of these days are already booked. Please choose other dates.",
       sending:"Sending…", ok:"Thank you. Your message has been sent and the owner will reply by email.", err:"The message could not be sent. Please try again in a moment.",
       need:"Please fill in your name and a valid email.", kids:"The house sleeps up to 8 guests in total.", qok:"Thank you. Your request has been sent to the owner, who will reply by email with availability and a quote.", off:"The contact form is being set up. Please come back soon.",
-      prev:"Previous months", next:"Next months", dates:"Dates"},
+      prev:"Previous months", next:"Next months", dates:"Dates",
+      seeN:n=>"See all "+n+" photos", slide:n=>"Photo "+n, close:"Close", pPrev:"Previous photo", pNext:"Next photo"},
   pt:{sync:"Disponibilidade sincronizada em", nosync:"O calendário está a ser ligado. Envie-nos as suas datas e confirmamos a disponibilidade.",
       sel1:"Chegada", sel2:"escolha agora o dia de partida.", nights:n=>n===1?"1 noite":n+" noites", busyIn:"Alguns destes dias já estão ocupados. Escolha outras datas, por favor.",
       sending:"A enviar…", ok:"Obrigado. A mensagem foi enviada e o proprietário responde por email.", err:"Não foi possível enviar a mensagem. Tente novamente daqui a pouco.",
       need:"Preencha o nome e um email válido, por favor.", kids:"A casa recebe até 8 pessoas no total.", qok:"Obrigado. O pedido foi enviado ao proprietário, que responde por email com a disponibilidade e o orçamento.", off:"O formulário está a ser configurado. Volte em breve, por favor.",
-      prev:"Meses anteriores", next:"Meses seguintes", dates:"Datas"}
+      prev:"Meses anteriores", next:"Meses seguintes", dates:"Datas",
+      seeN:n=>"Ver as "+n+" fotografias", slide:n=>"Fotografia "+n, close:"Fechar", pPrev:"Fotografia anterior", pNext:"Fotografia seguinte"}
  }
 };
 // guardar o texto inglês original
@@ -472,7 +525,7 @@ function applyLang(l){
   document.getElementById("prev").setAttribute("aria-label", M().prev);
   document.getElementById("next").setAttribute("aria-label", M().next);
   try { localStorage.setItem("cm-lang", l); } catch(e) {}
-  renderCal(); renderSync(); renderSel(); if (typeof renderGallery === 'function' && GAL.length) renderGallery();
+  renderCal(); renderSync(); renderSel(); if (typeof renderPhotos === 'function') renderPhotos();
 }
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
 
@@ -640,40 +693,116 @@ document.getElementById("form").addEventListener("submit", async e => {
 
 
 // ---------- fotografias ----------
-let GAL = [];
+// Dois modos, conforme img/fotos.json:
+//  «divisoes»: o Paulo organiza o Drive em Site/<divisão>; Site/Foto Principal dá o topo (1 = fixa, 2+ = carrossel)
+//  «lista»: modo antigo, seleção em content/galeria.json
+let IDX = null, GAL = [], ROOMS = [], HERO = [], LB = [], lbI = 0, rgSlug = null;
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
 function srcset(f){ return Object.entries(f.srcs).map(([w,n]) => `img/${n} ${w}w`).join(", "); }
 function maior(f){ const k = Object.keys(f.srcs).map(Number).sort((a,b)=>b-a)[0]; return "img/" + f.srcs[String(k)]; }
+function menor(f){ const k = Object.keys(f.srcs).map(Number).sort((a,b)=>a-b)[0]; return "img/" + f.srcs[String(k)]; }
+const roomName = r => (lang === "pt" ? r.pt : r.en) || r.pt;
 function altOf(g){ return (lang === "pt" ? g.alt_pt : g.alt_en) || g.alt_en || "Casa da Madrinha"; }
-function renderGallery(){
-  const box = document.getElementById("gallery");
-  if (!GAL.length) { box.hidden = true; document.getElementById("gallery-soon").hidden = false; return; }
-  document.getElementById("gallery-soon").hidden = true; box.hidden = false;
-  box.innerHTML = GAL.map((g,i) => `<figure><button type="button" data-i="${i}"><img loading="lazy" decoding="async" srcset="${srcset(g.f)}" sizes="(min-width:900px) 25vw, (min-width:600px) 33vw, 50vw" src="img/${g.f.srcs[Object.keys(g.f.srcs)[0]]}" alt="${altOf(g).replace(/"/g,"&quot;")}" width="${g.f.w}" height="${g.f.h}"></button></figure>`).join("");
+const img = (f, sizes, alt, extra="") => `<img loading="lazy" decoding="async" srcset="${srcset(f)}" sizes="${sizes}" src="${menor(f)}" alt="${esc(alt)}" width="${f.w}" height="${f.h}"${extra}>`;
+
+function renderPhotos(){
+  const soon = document.getElementById("gallery-soon"), gal = document.getElementById("gallery"), box = document.getElementById("rooms-box");
+  if (ROOMS.length) {
+    soon.hidden = true; gal.hidden = true; box.hidden = false;
+    document.getElementById("rooms").innerHTML = ROOMS.map((r, ri) => {
+      const two = r.fotos.slice(0, 2), nome = roomName(r);
+      return `<article class="room"><div class="pair${two.length < 2 ? " one" : ""}">` +
+        two.map((f, i) => `<button type="button" data-room="${ri}" data-i="${i}" aria-label="${esc(nome)}, ${M().slide(i + 1)}">${img(f, "(min-width:1100px) 17vw, (min-width:700px) 25vw, 50vw", "")}</button>`).join("") +
+        `</div><div class="room-foot"><h4>${esc(nome)}</h4>` +
+        (r.fotos.length > 2 ? `<button type="button" class="linkbtn" data-open="${ri}">${M().seeN(r.fotos.length)} →</button>` : "") +
+        `</div></article>`;
+    }).join("");
+    if (document.getElementById("rg").open) renderRg();
+  } else if (GAL.length) {
+    soon.hidden = true; box.hidden = true; gal.hidden = false;
+    gal.innerHTML = GAL.map((g,i) => `<figure><button type="button" data-i="${i}">${img(g.f, "(min-width:900px) 25vw, (min-width:600px) 33vw, 50vw", altOf(g))}</button></figure>`).join("");
+  } else { box.hidden = true; gal.hidden = true; soon.hidden = false; }
+  const dots = document.getElementById("hero-dots");
+  if (dots) dots.querySelectorAll("button").forEach((b, i) => b.setAttribute("aria-label", M().slide(i + 1)));
+  ["lb-prev","lb-next","lb-close","rg-close"].forEach((id, k) => document.getElementById(id).setAttribute("aria-label", [M().pPrev, M().pNext, M().close, M().close][k]));
 }
-let lbI = 0;
-function openLb(i){ lbI = (i + GAL.length) % GAL.length; const g = GAL[lbI], im = document.getElementById("lb-img");
-  im.src = maior(g.f); im.alt = altOf(g); document.getElementById("lb-cap").textContent = altOf(g);
+
+// galeria por divisão (janela de ecrã inteiro com separadores)
+function renderRg(){
+  const r = ROOMS.find(x => x.slug === rgSlug) || ROOMS[0]; rgSlug = r.slug;
+  document.getElementById("rg-chips").innerHTML = ROOMS.map(x => `<button type="button" data-slug="${x.slug}" aria-pressed="${x.slug === rgSlug}">${esc(roomName(x))}<small>${x.fotos.length}</small></button>`).join("");
+  document.getElementById("rg-grid").innerHTML = r.fotos.map((f, i) => `<button type="button" data-i="${i}" aria-label="${esc(roomName(r))}, ${M().slide(i + 1)}">${img(f, "(min-width:1100px) 25vw, (min-width:600px) 33vw, 100vw", "")}</button>`).join("");
+  const on = document.querySelector('#rg-chips [aria-pressed="true"]'); if (on) on.scrollIntoView({block:"nearest", inline:"nearest"});
+}
+function openRg(ri){
+  rgSlug = ROOMS[ri || 0].slug; renderRg();
+  const d = document.getElementById("rg"); if (!d.open) d.showModal();
+  d.scrollTop = 0;
+}
+const roomList = r => r.fotos.map((f, i) => ({f, cap: `${roomName(r)} · ${i + 1}/${r.fotos.length}`, alt: roomName(r)}));
+
+// fotografia ampliada
+function openLb(list, i){ if (list) LB = list; lbI = (i + LB.length) % LB.length; const g = LB[lbI], im = document.getElementById("lb-img");
+  im.src = maior(g.f); im.alt = g.alt; document.getElementById("lb-cap").textContent = g.cap;
+  document.getElementById("lb-prev").hidden = document.getElementById("lb-next").hidden = LB.length < 2;
   const d = document.getElementById("lb"); if (!d.open) d.showModal(); }
-document.getElementById("gallery").addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) openLb(+b.dataset.i); });
+
+document.getElementById("rooms").addEventListener("click", e => {
+  const o = e.target.closest("[data-open]"); if (o) return openRg(+o.dataset.open);
+  const b = e.target.closest("button[data-room]"); if (b) openLb(roomList(ROOMS[+b.dataset.room]), +b.dataset.i);
+});
+document.getElementById("rooms-all").addEventListener("click", () => openRg(0));
+document.getElementById("rg-chips").addEventListener("click", e => { const b = e.target.closest("button[data-slug]"); if (b) { rgSlug = b.dataset.slug; renderRg(); document.getElementById("rg").scrollTop = 0; } });
+document.getElementById("rg-grid").addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) openLb(roomList(ROOMS.find(x => x.slug === rgSlug)), +b.dataset.i); });
+document.getElementById("rg-close").addEventListener("click", () => document.getElementById("rg").close());
+document.getElementById("gallery").addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) openLb(GAL.map(g => ({f: g.f, cap: altOf(g), alt: altOf(g)})), +b.dataset.i); });
 document.getElementById("lb-close").addEventListener("click", () => document.getElementById("lb").close());
-document.getElementById("lb-prev").addEventListener("click", () => openLb(lbI - 1));
-document.getElementById("lb-next").addEventListener("click", () => openLb(lbI + 1));
-document.getElementById("lb").addEventListener("keydown", e => { if (e.key === "ArrowLeft") openLb(lbI - 1); if (e.key === "ArrowRight") openLb(lbI + 1); });
+document.getElementById("lb-prev").addEventListener("click", () => openLb(null, lbI - 1));
+document.getElementById("lb-next").addEventListener("click", () => openLb(null, lbI + 1));
+document.getElementById("lb").addEventListener("keydown", e => { if (e.key === "ArrowLeft") openLb(null, lbI - 1); if (e.key === "ArrowRight") openLb(null, lbI + 1); });
 document.getElementById("lb").addEventListener("click", e => { if (e.target.id === "lb") e.target.close(); });
+// deslizar com o dedo na fotografia ampliada
+(() => { let x0 = null; const d = document.getElementById("lb");
+  d.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
+  d.addEventListener("touchend", e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50 && LB.length > 1) openLb(null, lbI + (dx < 0 ? 1 : -1)); }, {passive:true});
+})();
+
+// topo: fotografia fixa ou carrossel automático (5 s por fotografia)
+function renderHero(lista){
+  if (!lista.length) return;
+  const art = document.getElementById("hero-art"), hero = art.parentElement;
+  art.innerHTML = lista.map((f, i) => `<img class="sl${i ? "" : " on"}" ${i ? 'loading="lazy" ' : 'fetchpriority="high" '}srcset="${srcset(f)}" sizes="100vw" src="${maior(f)}" alt="">`).join("");
+  if (lista.length < 2) return;
+  const dots = document.createElement("div"); dots.className = "hero-dots"; dots.id = "hero-dots";
+  dots.innerHTML = lista.map((_, i) => `<button type="button" aria-current="${i === 0}" aria-label="${M().slide(i + 1)}"></button>`).join("");
+  hero.appendChild(dots);
+  const imgs = art.querySelectorAll("img"), btns = dots.querySelectorAll("button");
+  let cur = 0, timer = null;
+  const show = n => { cur = (n + imgs.length) % imgs.length;
+    imgs.forEach((im, i) => im.classList.toggle("on", i === cur)); btns.forEach((b, i) => b.setAttribute("aria-current", String(i === cur)));
+    const nx = imgs[(cur + 1) % imgs.length]; if (nx.loading === "lazy") nx.loading = "eager"; };
+  const start = () => { clearInterval(timer); timer = setInterval(() => show(cur + 1), 5000); };
+  btns.forEach((b, i) => b.addEventListener("click", () => { show(i); start(); }));
+  document.addEventListener("visibilitychange", () => document.hidden ? clearInterval(timer) : start());
+  show(0); start();
+}
 
 Promise.all([
-  fetch("img/fotos.json",{cache:"no-store"}).then(r => r.ok ? r.json() : null).catch(() => null),
-  fetch("content/galeria.json",{cache:"no-store"}).then(r => r.ok ? r.json() : null).catch(() => null)
+  fetch("img/fotos.json?t=" + Date.now(),{cache:"no-store"}).then(r => r.ok ? r.json() : null).catch(() => null),
+  fetch("content/galeria.json?t=" + Date.now(),{cache:"no-store"}).then(r => r.ok ? r.json() : null).catch(() => null)
 ]).then(([idx, gal]) => {
-  if (!idx || !gal) return;
-  const by = {}; (idx.fotos||[]).forEach(f => { by[f.nome] = f; by[f.id] = f; });
-  GAL = (gal.fotos||[]).map(g => ({...g, f: by[g.foto]})).filter(g => g.f);
-  const h = gal.hero && by[gal.hero];
-  if (h) {
-    const art = document.getElementById("hero-art");
-    art.innerHTML = `<img srcset="${srcset(h)}" sizes="100vw" src="${maior(h)}" alt="" fetchpriority="high">`;
+  if (!idx) return;
+  IDX = idx;
+  if (idx.modo === "divisoes") {
+    ROOMS = (idx.divisoes || []).filter(r => r.fotos && r.fotos.length);
+    HERO = (idx.hero && idx.hero.length) ? idx.hero : (ROOMS[0] ? [ROOMS[0].fotos[0]] : []);
+  } else if (gal) {
+    const by = {}; (idx.fotos||[]).forEach(f => { by[f.nome] = f; by[f.id] = f; });
+    GAL = (gal.fotos||[]).map(g => ({...g, f: by[g.foto]})).filter(g => g.f);
+    HERO = gal.hero && by[gal.hero] ? [by[gal.hero]] : [];
   }
-  renderGallery();
+  renderHero(HERO);
+  renderPhotos();
 });
 
 applyLang(lang);
