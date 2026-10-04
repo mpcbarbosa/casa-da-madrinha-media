@@ -186,6 +186,22 @@ class Preparador:
         return out
 
 
+def capitalizar(s):
+    """Nomes escritos todos em maiúsculas («QUARTO 1») passam a «Quarto 1»; «WC» mantém-se."""
+    if not s or s != s.upper() or not any(c.isalpha() for c in s):
+        return s
+    palavras = s.lower().split()
+    out = []
+    for i, w in enumerate(palavras):
+        if w in ("wc", "tv", "al"):
+            out.append(w.upper())
+        elif i == 0:
+            out.append(w[:1].upper() + w[1:])
+        else:
+            out.append(w)
+    return " ".join(out)
+
+
 def titulos(nome_pasta):
     """«02 Quarto 1» → ordem 2 e {"pt": "Quarto 1", "en": "Bedroom 1", "es": "Dormitorio 1", ...}.
 
@@ -194,7 +210,7 @@ def titulos(nome_pasta):
     """
     m = re.match(r"^\s*(\d+)\s*[.\-–)]?\s*(.+)$", nome_pasta)
     ordem_manual, nome = (int(m.group(1)), m.group(2).strip()) if m else (None, nome_pasta.strip())
-    partes = [x.strip() for x in nome.split("|")]
+    partes = [capitalizar(x.strip()) for x in nome.split("|")]
     pt, manuais = partes[0], partes[1:]
     nomes = {"pt": pt}
     n = norm(pt)
