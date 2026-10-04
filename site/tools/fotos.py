@@ -11,14 +11,15 @@ Organização no Drive (modo «divisões»), dentro da pasta config.drive.pasta_
   Site/                         nome em config.drive.pasta_site (por omissão «Site»)
     Foto Principal/             1 foto = imagem fixa; 2 ou mais = carrossel no topo
     Quarto 1/                   uma pasta por divisão; o nome da pasta é o título
-    Cozinha/                    no site (tradução automática para inglês)
+    Cozinha/                    no site (tradução automática EN/ES/FR/DE)
     ...
 
   - A ordem das fotos dentro de cada pasta é a ordem do nome do ficheiro; as duas
     primeiras são as que aparecem na página principal.
   - A ordem das divisões segue uma ordem natural (ver ORDEM); um número no início
     do nome («01 Sala», «2. Cozinha») sobrepõe-se a essa ordem e não aparece no site.
-  - «Quarto 1 | Master bedroom» define o título em inglês à mão.
+  - «Quarto 1 | Master bedroom» define o título em inglês à mão
+    («PT | EN | ES | FR | DE» define todos).
   - Pastas que comecem por «_» ou «#» são ignoradas (rascunhos).
 
 Se não existir a pasta «Site», usa o modo antigo: imagens soltas na pasta principal
@@ -48,16 +49,37 @@ ORDEM = ["quarto", "suite", "cozinha", "sala", "wc", "casa de banho", "vista", "
          "terraco", "varanda", "jardim", "exterior", "churrasqueira", "vila", "praia"]
 
 # tradução automática do início do nome da pasta (o resto, p. ex. o número, mantém-se)
-EN = {
-    "quarto": "Bedroom", "suite": "Suite", "cozinha": "Kitchen",
-    "sala de jantar": "Dining room", "sala de estar": "Living room", "sala": "Living room",
-    "wc": "Bathroom", "casa de banho": "Bathroom", "vistas": "Views", "vista": "View",
-    "piscina": "Pool", "terraco": "Terrace", "varanda": "Balcony", "jardim": "Garden",
-    "exterior": "Outdoors", "churrasqueira": "Barbecue", "vila": "The town",
-    "entrada": "Entrance", "hall": "Hall", "lavandaria": "Laundry", "garagem": "Garage",
-    "escritorio": "Study", "alpendre": "Porch", "sotao": "Attic", "praia": "Beach",
-    "zona de refeicoes": "Dining area", "corredor": "Hallway",
+#                       en               es             fr                 de
+TRAD = {
+    "quarto":            ("Bedroom",      "Dormitorio",  "Chambre",         "Schlafzimmer"),
+    "suite":             ("Suite",        "Suite",       "Suite",           "Suite"),
+    "cozinha":           ("Kitchen",      "Cocina",      "Cuisine",         "Küche"),
+    "sala de jantar":    ("Dining room",  "Comedor",     "Salle à manger",  "Esszimmer"),
+    "sala de estar":     ("Living room",  "Salón",       "Salon",           "Wohnzimmer"),
+    "sala":              ("Living room",  "Salón",       "Salon",           "Wohnzimmer"),
+    "wc":                ("Bathroom",     "Baño",        "Salle de bain",   "Badezimmer"),
+    "casa de banho":     ("Bathroom",     "Baño",        "Salle de bain",   "Badezimmer"),
+    "vistas":            ("Views",        "Vistas",      "Vues",            "Aussicht"),
+    "vista":             ("View",         "Vistas",      "Vue",             "Aussicht"),
+    "piscina":           ("Pool",         "Piscina",     "Piscine",         "Pool"),
+    "terraco":           ("Terrace",      "Terraza",     "Terrasse",        "Terrasse"),
+    "varanda":           ("Balcony",      "Balcón",      "Balcon",          "Balkon"),
+    "jardim":            ("Garden",       "Jardín",      "Jardin",          "Garten"),
+    "exterior":          ("Outdoors",     "Exterior",    "Extérieur",       "Außenbereich"),
+    "churrasqueira":     ("Barbecue",     "Barbacoa",    "Barbecue",        "Grillplatz"),
+    "vila":              ("The town",     "El pueblo",   "Le village",      "Der Ort"),
+    "entrada":           ("Entrance",     "Entrada",     "Entrée",          "Eingang"),
+    "hall":              ("Hall",         "Recibidor",   "Hall",            "Diele"),
+    "lavandaria":        ("Laundry",      "Lavadero",    "Buanderie",       "Waschküche"),
+    "garagem":           ("Garage",       "Garaje",      "Garage",          "Garage"),
+    "escritorio":        ("Study",        "Despacho",    "Bureau",          "Arbeitszimmer"),
+    "alpendre":          ("Porch",        "Porche",      "Porche",          "Veranda"),
+    "sotao":             ("Attic",        "Desván",      "Grenier",         "Dachboden"),
+    "praia":             ("Beach",        "Playa",       "Plage",           "Strand"),
+    "zona de refeicoes": ("Dining area",  "Comedor",     "Coin repas",      "Essbereich"),
+    "corredor":          ("Hallway",      "Pasillo",     "Couloir",         "Flur"),
 }
+IDIOMAS = ("en", "es", "fr", "de")
 
 
 def norm(s):
@@ -165,20 +187,29 @@ class Preparador:
 
 
 def titulos(nome_pasta):
-    """«02 Quarto 1» → ordem 2, «Quarto 1», «Bedroom 1»; «Sala | Lounge» → EN manual."""
+    """«02 Quarto 1» → ordem 2 e {"pt": "Quarto 1", "en": "Bedroom 1", "es": "Dormitorio 1", ...}.
+
+    «Sala | Lounge» define o inglês à mão; «Sala | Lounge | Salón | Salon | Wohnzimmer»
+    define en, es, fr e de por esta ordem (os que faltarem são traduzidos automaticamente).
+    """
     m = re.match(r"^\s*(\d+)\s*[.\-–)]?\s*(.+)$", nome_pasta)
     ordem_manual, nome = (int(m.group(1)), m.group(2).strip()) if m else (None, nome_pasta.strip())
-    if "|" in nome:
-        pt, en = (x.strip() for x in nome.split("|", 1))
-        return ordem_manual, pt, en or pt
-    n = norm(nome)
-    en = nome
-    for k in sorted(EN, key=len, reverse=True):
+    partes = [x.strip() for x in nome.split("|")]
+    pt, manuais = partes[0], partes[1:]
+    nomes = {"pt": pt}
+    n = norm(pt)
+    for k in sorted(TRAD, key=len, reverse=True):
         if n == k or n.startswith(k + " "):
-            resto = nome.split()[len(k.split()):]
-            en = " ".join([EN[k]] + resto)
+            resto = pt.split()[len(k.split()):]
+            for lang, t in zip(IDIOMAS, TRAD[k]):
+                nomes[lang] = " ".join([t] + resto)
             break
-    return ordem_manual, nome, en
+    for lang, t in zip(IDIOMAS, manuais):
+        if t:
+            nomes[lang] = t
+    for lang in IDIOMAS:
+        nomes.setdefault(lang, nomes.get("en", pt))
+    return ordem_manual, nomes
 
 
 def ordem_divisao(ordem_manual, nome):
@@ -214,12 +245,13 @@ def modo_divisoes(s, pasta_site, prep):
         if not fotos:
             print(f"  {p['name']}: sem imagens (ignorada)")
             continue
-        om, pt, en = titulos(p["name"])
+        om, nomes = titulos(p["name"])
+        pt = nomes["pt"]
         sl = slug(pt)
         while sl in slugs:
             sl += "-2"
         slugs.add(sl)
-        divisoes.append({"slug": sl, "pt": pt, "en": en, "_ord": ordem_divisao(om, pt), "fotos": fotos})
+        divisoes.append({"slug": sl, **nomes, "_ord": ordem_divisao(om, pt), "fotos": fotos})
         print(f"  {pt}: {len(fotos)}")
     divisoes.sort(key=lambda d: d.pop("_ord"))
     return hero, divisoes

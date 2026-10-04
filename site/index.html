@@ -40,7 +40,8 @@ section+section{border-top:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:var(--disp);font-size:1.15rem;font-weight:600}
 .brand svg{width:34px;height:34px}
 .lang{display:flex;border:1px solid rgba(255,255,255,.5);border-radius:999px;overflow:hidden}
-.lang button{background:none;border:0;color:#fff;font:500 .8rem var(--ui);letter-spacing:.08em;padding:6px 12px;cursor:pointer}
+.lang button{background:none;border:0;color:#fff;font:500 .8rem var(--ui);letter-spacing:.06em;padding:6px 10px;min-width:38px;min-height:32px;cursor:pointer}
+@media (max-width:460px){.brand span{display:none}.lang button{padding:6px 8px;min-width:34px}}
 .lang button[aria-pressed="true"]{background:#fff;color:var(--musgo)}
 
 /* hero */
@@ -231,6 +232,9 @@ footer b{color:#EEF1EA;font-weight:600}
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+      <button type="button" data-lang="es" aria-pressed="false">ES</button>
+      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      <button type="button" data-lang="de" aria-pressed="false">DE</button>
     </div>
   </div>
 </header>
@@ -496,30 +500,371 @@ const T = {
   "f.consent":"Usamos os seus dados apenas para responder a este pedido.","f.send":"Enviar mensagem","q.title":"Pedir orçamento para estas datas","q.adults":"Adultos","q.kids":"Crianças","q.phone":"Telefone (opcional)","q.msg":"Algo que devamos saber? (opcional)","q.send":"Enviar pedido de orçamento",
   "c.alt":"Prefere reservar pelo Airbnb?","foot.reg":"Registo de Alojamento Local"
  },
+ es:{
+  "hero.eyebrow":"Caminha · Alto Minho · Portugal",
+  "hero.text":"Una casa amplia con piscina, jardín y vistas abiertas, donde el río Miño se encuentra con el Atlántico.",
+  "fact.bedrooms":"4 dormitorios",
+  "fact.guests":"Hasta 8 personas",
+  "fact.pool":"Piscina privada",
+  "fact.bbq":"Jardín y barbacoa",
+  "cta.dates":"Ver fechas y pedir presupuesto",
+  "cta.contact":"Hacer una pregunta",
+  "house.eyebrow":"La casa",
+  "house.title":"Espacio para respirar, hasta ocho personas",
+  "house.lead":"Una casa familiar pensada para comidas largas en el jardín, tardes tranquilas junto a la piscina y noches alrededor de la barbacoa, con las vistas del Alto Minho alrededor.",
+  "h.space.t":"Casa amplia",
+  "h.space.d":"Cuatro dormitorios y salones generosos, para que cada uno tenga su espacio.",
+  "h.views.t":"Vistas abiertas",
+  "h.views.d":"Vistas despejadas sobre el paisaje del Alto Minho.",
+  "h.pool.t":"Piscina privada",
+  "h.pool.d":"Una piscina para las tardes de calor, a pocos pasos de la casa.",
+  "h.garden.t":"Jardín",
+  "h.garden.d":"Espacio exterior para que jueguen los niños y para sobremesas que se alargan.",
+  "h.bbq.t":"Barbacoa",
+  "h.bbq.d":"Encienda la parrilla para cenas al aire libre con familia y amigos.",
+  "house.glance":"En resumen",
+  "spec.bedrooms":"dormitorios",
+  "spec.guests":"personas",
+  "spec.checkin":"entrada desde las",
+  "spec.checkout":"salida hasta las",
+  "rooms.title":"La casa, estancia por estancia",
+  "rooms.all":"Ver todas las fotos",
+  "rooms.dlg":"Fotos de la casa",
+  "gallery.soon":"Las fotos de cada estancia están en camino. Mientras tanto, pregúntenos lo que quiera sobre la casa.",
+  "av.eyebrow":"Disponibilidad",
+  "av.title":"Elija sus fechas",
+  "av.lead":"Toque el día de llegada y después el de salida, díganos quién viene y envíe su solicitud. El propietario responde directamente con la disponibilidad y el presupuesto.",
+  "av.free":"Libre",
+  "av.busy":"Ocupado",
+  "av.sel":"Sus fechas",
+  "av.clear":"Borrar",
+  "q.title":"Pedir presupuesto para estas fechas",
+  "q.adults":"Adultos",
+  "q.kids":"Niños",
+  "f.name":"Nombre",
+  "f.email":"Correo electrónico",
+  "q.phone":"Teléfono (opcional)",
+  "f.country":"País",
+  "q.msg":"¿Algo que debamos saber? (opcional)",
+  "f.consent":"Usamos sus datos solo para responder a esta solicitud.",
+  "q.send":"Enviar solicitud de presupuesto",
+  "area.eyebrow":"La zona",
+  "area.title":"Donde el Miño se encuentra con el Atlántico",
+  "area.lead":"Caminha está en el extremo norte de Portugal, entre el río, el océano y la sierra, con Galicia en la otra orilla.",
+  "p.foz.t":"Foz do Minho y Camarido",
+  "p.foz.s":"Playa · todo el año",
+  "p.foz.d":"La playa de mar más al norte de Portugal, a la que se llega por el pinar de Camarido en una pasarela de 1 km, frente al fuerte de la Ínsua.",
+  "p.moledo.t":"Moledo",
+  "p.moledo.s":"Playa · verano",
+  "p.moledo.d":"Playa de arena y roca con Bandera Azul, muy buscada para surf, bodyboard y windsurf.",
+  "p.ecovia.t":"Ecovía del Miño",
+  "p.ecovia.s":"A pie y en bicicleta · primavera y otoño",
+  "p.ecovia.d":"Un recorrido casi llano junto al río, de Caminha a Vila Nova de Cerveira y hasta Valença.",
+  "p.arga.t":"Serra d'Arga",
+  "p.arga.s":"Senderos · todo el año",
+  "p.arga.d":"Senderos de montaña señalizados, aldeas de granito y pozas naturales para bañarse en verano.",
+  "p.tecla.t":"Monte de Santa Tecla",
+  "p.tecla.s":"Galicia · unos 30 min en coche",
+  "p.tecla.d":"Un castro antiguo con vistas a la desembocadura, en la orilla gallega. Se cruza por el puente de Vila Nova de Cerveira.",
+  "p.viana.t":"Viana do Castelo y Valença",
+  "p.viana.s":"Excursiones de un día · unos 25 min",
+  "p.viana.d":"Santa Luzia y el casco histórico de Viana al sur, la fortaleza amurallada de Valença al norte.",
+  "s.win.t":"Invierno",
+  "s.win.d":"Temporada de lamprea en los restaurantes desde enero, luces de Navidad en la plaza y playas tranquilas.",
+  "s.spr.t":"Primavera",
+  "s.spr.d":"Montes verdes, bicicleta junto al río y las primeras comidas al aire libre.",
+  "s.sum.t":"Verano",
+  "s.sum.d":"Playas, piscina y festivales de música: Vilar de Mouros está en el municipio y Paredes de Coura, muy cerca.",
+  "s.aut.t":"Otoño",
+  "s.aut.d":"Senderos de montaña, días suaves junto al mar y una base tranquila para teletrabajar.",
+  "map.note":"Zona aproximada. La dirección exacta se envía cuando se confirma la estancia.",
+  "arr.eyebrow":"Cómo llegar",
+  "arr.title":"Cerca de dos aeropuertos",
+  "arr.opo.t":"Aeropuerto de Oporto",
+  "arr.opo.d":"Unos 90 km, cerca de 1 hora en coche por la A28.",
+  "arr.vgo.t":"Aeropuerto de Vigo",
+  "arr.vgo.d":"Unos 55 km, menos de 1 hora en coche.",
+  "arr.train.t":"En tren",
+  "arr.train.d":"Caminha está en la línea del Miño, con trenes regulares a Oporto.",
+  "faq.eyebrow":"Conviene saber",
+  "faq.title":"Preguntas de los huéspedes",
+  "q1":"¿A qué hora son la entrada y la salida?",
+  "a1":"La entrada es a partir de las 16:00 y la salida hasta las 12:00.",
+  "q2":"¿Cómo reservo?",
+  "a2":"Elija sus fechas en el calendario y envíe una solicitud de presupuesto; el propietario responde directamente. También puede reservar a través de Airbnb.",
+  "q3":"¿Está actualizado el calendario?",
+  "a3":"Se sincroniza con Airbnb cada pocas horas. Siempre confirmamos la disponibilidad cuando nos escribe.",
+  "q4":"¿Cuántas personas pueden alojarse?",
+  "a4":"La casa tiene cuatro dormitorios y admite hasta ocho personas.",
+  "q5":"¿Puedo preguntar por aparcamiento, mascotas u otra cosa?",
+  "a5":"Por supuesto. Escríbanos con su pregunta y le responderemos personalmente.",
+  "c.eyebrow":"Contacto",
+  "c.title":"¿Tiene alguna pregunta?",
+  "c.lead":"Escriba al propietario sobre cualquier cosa que no encuentre en esta página. Para pedir presupuesto, elija sus fechas en el calendario de arriba.",
+  "f.msg":"Mensaje",
+  "f.send":"Enviar mensaje",
+  "c.alt":"¿Prefiere reservar en Airbnb?",
+  "foot.reg":"Registro de alojamiento local"
+ },
+ fr:{
+  "hero.eyebrow":"Caminha · Alto Minho · Portugal",
+  "hero.text":"Une maison spacieuse avec piscine, jardin et vue dégagée, là où le Minho rejoint l'Atlantique.",
+  "fact.bedrooms":"4 chambres",
+  "fact.guests":"Jusqu'à 8 personnes",
+  "fact.pool":"Piscine privée",
+  "fact.bbq":"Jardin et barbecue",
+  "cta.dates":"Voir les dates et demander un devis",
+  "cta.contact":"Poser une question",
+  "house.eyebrow":"La maison",
+  "house.title":"De l'espace pour respirer, jusqu'à huit personnes",
+  "house.lead":"Une maison de famille faite pour les longs déjeuners au jardin, les après-midi tranquilles au bord de la piscine et les soirées autour du barbecue, avec les paysages de l'Alto Minho tout autour.",
+  "h.space.t":"Maison spacieuse",
+  "h.space.d":"Quatre chambres et de grands espaces de vie, pour que chacun ait le sien.",
+  "h.views.t":"Vue dégagée",
+  "h.views.d":"Une vue ouverte sur les paysages de l'Alto Minho.",
+  "h.pool.t":"Piscine privée",
+  "h.pool.d":"Une piscine pour les après-midi chauds, à quelques pas de la maison.",
+  "h.garden.t":"Jardin",
+  "h.garden.d":"Un espace extérieur pour les jeux des enfants et les tablées qui s'éternisent.",
+  "h.bbq.t":"Barbecue",
+  "h.bbq.d":"Allumez le grill pour des soirées dehors en famille ou entre amis.",
+  "house.glance":"En bref",
+  "spec.bedrooms":"chambres",
+  "spec.guests":"personnes",
+  "spec.checkin":"arrivée à partir de",
+  "spec.checkout":"départ avant",
+  "rooms.title":"La maison, pièce par pièce",
+  "rooms.all":"Voir toutes les photos",
+  "rooms.dlg":"Photos de la maison",
+  "gallery.soon":"Les photos de chaque pièce arrivent bientôt. En attendant, posez-nous toutes vos questions sur la maison.",
+  "av.eyebrow":"Disponibilités",
+  "av.title":"Choisissez vos dates",
+  "av.lead":"Touchez votre jour d'arrivée puis votre jour de départ, dites-nous qui vient et envoyez votre demande. Le propriétaire répond directement avec les disponibilités et un devis.",
+  "av.free":"Libre",
+  "av.busy":"Réservé",
+  "av.sel":"Vos dates",
+  "av.clear":"Effacer",
+  "q.title":"Demander un devis pour ces dates",
+  "q.adults":"Adultes",
+  "q.kids":"Enfants",
+  "f.name":"Nom",
+  "f.email":"E-mail",
+  "q.phone":"Téléphone (facultatif)",
+  "f.country":"Pays",
+  "q.msg":"Quelque chose à nous signaler ? (facultatif)",
+  "f.consent":"Vos données servent uniquement à répondre à cette demande.",
+  "q.send":"Envoyer la demande de devis",
+  "area.eyebrow":"La région",
+  "area.title":"Là où le Minho rejoint l'Atlantique",
+  "area.lead":"Caminha se trouve à l'extrême nord du Portugal, entre le fleuve, l'océan et les collines, avec l'Espagne sur l'autre rive.",
+  "p.foz.t":"Foz do Minho et Camarido",
+  "p.foz.s":"Plage · toute l'année",
+  "p.foz.d":"La plage océane la plus au nord du Portugal, accessible par la pinède du Camarido sur une passerelle de 1 km, face au fort de l'Ínsua.",
+  "p.moledo.t":"Moledo",
+  "p.moledo.s":"Plage · été",
+  "p.moledo.d":"Une plage de sable et de rochers labellisée Pavillon Bleu, prisée pour le surf, le bodyboard et la planche à voile.",
+  "p.ecovia.t":"Ecovia do Minho",
+  "p.ecovia.s":"À pied et à vélo · printemps et automne",
+  "p.ecovia.d":"Un parcours presque plat le long du fleuve, de Caminha à Vila Nova de Cerveira et jusqu'à Valença.",
+  "p.arga.t":"Serra d'Arga",
+  "p.arga.s":"Randonnées · toute l'année",
+  "p.arga.d":"Des sentiers de montagne balisés, des villages de granit et des bassins naturels pour se baigner l'été.",
+  "p.tecla.t":"Monte de Santa Tecla",
+  "p.tecla.s":"Espagne · environ 30 min en voiture",
+  "p.tecla.d":"Un ancien oppidum avec vue sur l'embouchure, sur la rive espagnole. On traverse par le pont de Vila Nova de Cerveira.",
+  "p.viana.t":"Viana do Castelo et Valença",
+  "p.viana.s":"Excursions à la journée · environ 25 min",
+  "p.viana.d":"Santa Luzia et le centre historique de Viana au sud, la forteresse fortifiée de Valença au nord.",
+  "s.win.t":"Hiver",
+  "s.win.d":"La saison de la lamproie dans les restaurants dès janvier, les illuminations de Noël sur la place et des plages paisibles.",
+  "s.spr.t":"Printemps",
+  "s.spr.d":"Des collines vertes, du vélo le long du fleuve et les premiers déjeuners dehors.",
+  "s.sum.t":"Été",
+  "s.sum.d":"Plages, piscine et festivals : Vilar de Mouros est sur la commune, Paredes de Coura tout près.",
+  "s.aut.t":"Automne",
+  "s.aut.d":"Sentiers de montagne, journées douces au bord de la mer et une base calme pour le télétravail.",
+  "map.note":"Zone approximative. L'adresse exacte est communiquée une fois le séjour confirmé.",
+  "arr.eyebrow":"Venir",
+  "arr.title":"Proche de deux aéroports",
+  "arr.opo.t":"Aéroport de Porto",
+  "arr.opo.d":"Environ 90 km, à peu près 1 heure en voiture par l'A28.",
+  "arr.vgo.t":"Aéroport de Vigo",
+  "arr.vgo.d":"Environ 55 km, moins d'1 heure en voiture.",
+  "arr.train.t":"En train",
+  "arr.train.d":"Caminha est sur la ligne du Minho, avec des trains réguliers vers Porto.",
+  "faq.eyebrow":"Bon à savoir",
+  "faq.title":"Les questions des voyageurs",
+  "q1":"À quelle heure sont l'arrivée et le départ ?",
+  "a1":"L'arrivée se fait à partir de 16:00 et le départ avant 12:00.",
+  "q2":"Comment réserver ?",
+  "a2":"Choisissez vos dates dans le calendrier et envoyez une demande de devis ; le propriétaire répond directement. Vous pouvez aussi réserver via Airbnb.",
+  "q3":"Le calendrier est-il à jour ?",
+  "a3":"Il est synchronisé avec Airbnb toutes les quelques heures. Nous confirmons toujours les disponibilités quand vous nous écrivez.",
+  "q4":"Combien de personnes peuvent séjourner ?",
+  "a4":"La maison a quatre chambres et accueille jusqu'à huit personnes.",
+  "q5":"Puis-je poser une question sur le parking, les animaux ou autre chose ?",
+  "a5":"Bien sûr. Écrivez-nous et nous vous répondrons personnellement.",
+  "c.eyebrow":"Contact",
+  "c.title":"Une question ?",
+  "c.lead":"Écrivez au propriétaire pour tout ce qui ne figure pas sur cette page. Pour un devis, choisissez vos dates dans le calendrier ci-dessus.",
+  "f.msg":"Message",
+  "f.send":"Envoyer le message",
+  "c.alt":"Vous préférez réserver sur Airbnb ?",
+  "foot.reg":"Numéro d'enregistrement d'hébergement local"
+ },
+ de:{
+  "hero.eyebrow":"Caminha · Alto Minho · Portugal",
+  "hero.text":"Ein geräumiges Haus mit Pool, Garten und weitem Blick, wo der Minho auf den Atlantik trifft.",
+  "fact.bedrooms":"4 Schlafzimmer",
+  "fact.guests":"Bis zu 8 Gäste",
+  "fact.pool":"Privater Pool",
+  "fact.bbq":"Garten und Grill",
+  "cta.dates":"Termine prüfen und Angebot anfragen",
+  "cta.contact":"Eine Frage stellen",
+  "house.eyebrow":"Das Haus",
+  "house.title":"Platz zum Durchatmen, für bis zu acht Personen",
+  "house.lead":"Ein Familienhaus für lange Mittagessen im Garten, ruhige Nachmittage am Pool und Abende am Grill, mit den Landschaften des Alto Minho ringsum.",
+  "h.space.t":"Geräumiges Haus",
+  "h.space.d":"Vier Schlafzimmer und großzügige Wohnräume, damit jeder seinen eigenen Platz hat.",
+  "h.views.t":"Weiter Blick",
+  "h.views.d":"Freier Blick über die Landschaft des Alto Minho.",
+  "h.pool.t":"Privater Pool",
+  "h.pool.d":"Ein Pool für warme Nachmittage, nur wenige Schritte vom Haus.",
+  "h.garden.t":"Garten",
+  "h.garden.d":"Platz im Freien zum Spielen für Kinder und für lange Tafelrunden.",
+  "h.bbq.t":"Grill",
+  "h.bbq.d":"Werfen Sie den Grill an für Abende draußen mit Familie und Freunden.",
+  "house.glance":"Auf einen Blick",
+  "spec.bedrooms":"Schlafzimmer",
+  "spec.guests":"Gäste",
+  "spec.checkin":"Check-in ab",
+  "spec.checkout":"Check-out bis",
+  "rooms.title":"Das Haus, Raum für Raum",
+  "rooms.all":"Alle Fotos ansehen",
+  "rooms.dlg":"Fotos des Hauses",
+  "gallery.soon":"Fotos aller Räume folgen in Kürze. Bis dahin beantworten wir gern Ihre Fragen zum Haus.",
+  "av.eyebrow":"Verfügbarkeit",
+  "av.title":"Wählen Sie Ihre Reisedaten",
+  "av.lead":"Tippen Sie auf Ihren Anreisetag und dann auf Ihren Abreisetag, sagen Sie uns, wer mitkommt, und senden Sie Ihre Anfrage. Der Eigentümer antwortet direkt mit Verfügbarkeit und Angebot.",
+  "av.free":"Frei",
+  "av.busy":"Belegt",
+  "av.sel":"Ihre Daten",
+  "av.clear":"Zurücksetzen",
+  "q.title":"Angebot für diese Daten anfragen",
+  "q.adults":"Erwachsene",
+  "q.kids":"Kinder",
+  "f.name":"Name",
+  "f.email":"E-Mail",
+  "q.phone":"Telefon (optional)",
+  "f.country":"Land",
+  "q.msg":"Gibt es etwas, das wir wissen sollten? (optional)",
+  "f.consent":"Wir verwenden Ihre Angaben nur, um diese Anfrage zu beantworten.",
+  "q.send":"Angebotsanfrage senden",
+  "area.eyebrow":"Die Umgebung",
+  "area.title":"Wo der Minho auf den Atlantik trifft",
+  "area.lead":"Caminha liegt am nördlichsten Rand Portugals, zwischen Fluss, Ozean und Hügeln, mit Spanien am anderen Ufer.",
+  "p.foz.t":"Foz do Minho und Camarido",
+  "p.foz.s":"Strand · ganzjährig",
+  "p.foz.d":"Der nördlichste Meeresstrand Portugals, erreichbar durch den Kiefernwald von Camarido über einen 1 km langen Holzsteg, gegenüber dem Fort der Ínsua.",
+  "p.moledo.t":"Moledo",
+  "p.moledo.s":"Strand · Sommer",
+  "p.moledo.d":"Ein Sand- und Felsstrand mit Blauer Flagge, beliebt zum Surfen, Bodyboarden und Windsurfen.",
+  "p.ecovia.t":"Ecovia do Minho",
+  "p.ecovia.s":"Zu Fuß und mit dem Rad · Frühling und Herbst",
+  "p.ecovia.d":"Ein fast ebener Weg am Fluss entlang, von Caminha nach Vila Nova de Cerveira und weiter bis Valença.",
+  "p.arga.t":"Serra d'Arga",
+  "p.arga.s":"Wanderwege · ganzjährig",
+  "p.arga.d":"Markierte Bergwanderwege, Granitdörfer und natürliche Badestellen für den Sommer.",
+  "p.tecla.t":"Monte de Santa Tecla",
+  "p.tecla.s":"Spanien · etwa 30 Min. mit dem Auto",
+  "p.tecla.d":"Eine alte Keltensiedlung mit Blick über die Flussmündung, am spanischen Ufer. Über die Brücke bei Vila Nova de Cerveira.",
+  "p.viana.t":"Viana do Castelo und Valença",
+  "p.viana.s":"Tagesausflüge · etwa 25 Min.",
+  "p.viana.d":"Santa Luzia und die Altstadt von Viana im Süden, die Festungsstadt Valença im Norden.",
+  "s.win.t":"Winter",
+  "s.win.d":"Ab Januar Neunaugen-Saison in den Restaurants, Weihnachtsbeleuchtung auf dem Platz und ruhige Strände.",
+  "s.spr.t":"Frühling",
+  "s.spr.d":"Grüne Hügel, Radtouren am Fluss und die ersten Mittagessen im Freien.",
+  "s.sum.t":"Sommer",
+  "s.sum.d":"Strände, Pool und Musikfestivals: Vilar de Mouros liegt in der Gemeinde, Paredes de Coura ganz in der Nähe.",
+  "s.aut.t":"Herbst",
+  "s.aut.d":"Bergwanderwege, milde Tage am Meer und ein ruhiger Ort zum Arbeiten aus der Ferne.",
+  "map.note":"Ungefähre Lage. Die genaue Adresse erhalten Sie, sobald Ihr Aufenthalt bestätigt ist.",
+  "arr.eyebrow":"Anreise",
+  "arr.title":"Nah an zwei Flughäfen",
+  "arr.opo.t":"Flughafen Porto",
+  "arr.opo.d":"Etwa 90 km, rund 1 Stunde mit dem Auto über die A28.",
+  "arr.vgo.t":"Flughafen Vigo",
+  "arr.vgo.d":"Etwa 55 km, unter 1 Stunde mit dem Auto.",
+  "arr.train.t":"Mit dem Zug",
+  "arr.train.d":"Caminha liegt an der Minho-Linie, mit regelmäßigen Zügen nach Porto.",
+  "faq.eyebrow":"Gut zu wissen",
+  "faq.title":"Häufige Fragen unserer Gäste",
+  "q1":"Wann sind Check-in und Check-out?",
+  "a1":"Check-in ist ab 16:00 Uhr, Check-out bis 12:00 Uhr.",
+  "q2":"Wie buche ich?",
+  "a2":"Wählen Sie Ihre Daten im Kalender und senden Sie eine Angebotsanfrage; der Eigentümer antwortet direkt. Sie können auch über Airbnb buchen.",
+  "q3":"Ist der Kalender aktuell?",
+  "a3":"Er wird alle paar Stunden mit Airbnb synchronisiert. Wir bestätigen die Verfügbarkeit immer, wenn Sie uns schreiben.",
+  "q4":"Wie viele Personen können übernachten?",
+  "a4":"Das Haus hat vier Schlafzimmer und bietet Platz für bis zu acht Gäste.",
+  "q5":"Kann ich nach Parkplatz, Haustieren oder anderem fragen?",
+  "a5":"Natürlich. Schreiben Sie uns Ihre Frage, wir antworten persönlich.",
+  "c.eyebrow":"Kontakt",
+  "c.title":"Haben Sie Fragen?",
+  "c.lead":"Schreiben Sie dem Eigentümer zu allem, was nicht auf dieser Seite steht. Für ein Angebot wählen Sie Ihre Daten im Kalender oben.",
+  "f.msg":"Nachricht",
+  "f.send":"Nachricht senden",
+  "c.alt":"Lieber über Airbnb buchen?",
+  "foot.reg":"Registrierungsnummer der Ferienunterkunft"
+ },
  msg:{
   en:{sync:"Availability last synchronised", nosync:"The live calendar is being connected. Send us your dates and we will confirm availability.",
       sel1:"Arrival", sel2:"now choose your departure day.", nights:n=>n===1?"1 night":n+" nights", busyIn:"Some of these days are already booked. Please choose other dates.",
       sending:"Sending…", ok:"Thank you. Your message has been sent and the owner will reply by email.", err:"The message could not be sent. Please try again in a moment.",
       need:"Please fill in your name and a valid email.", kids:"The house sleeps up to 8 guests in total.", qok:"Thank you. Your request has been sent to the owner, who will reply by email with availability and a quote.", off:"The contact form is being set up. Please come back soon.",
-      prev:"Previous months", next:"Next months", dates:"Dates",
+      prev:"Previous months", next:"Next months", dates:"Dates", booked:"booked",
       seeN:n=>"See all "+n+" photos", slide:n=>"Photo "+n, close:"Close", pPrev:"Previous photo", pNext:"Next photo"},
   pt:{sync:"Disponibilidade sincronizada em", nosync:"O calendário está a ser ligado. Envie-nos as suas datas e confirmamos a disponibilidade.",
       sel1:"Chegada", sel2:"escolha agora o dia de partida.", nights:n=>n===1?"1 noite":n+" noites", busyIn:"Alguns destes dias já estão ocupados. Escolha outras datas, por favor.",
       sending:"A enviar…", ok:"Obrigado. A mensagem foi enviada e o proprietário responde por email.", err:"Não foi possível enviar a mensagem. Tente novamente daqui a pouco.",
       need:"Preencha o nome e um email válido, por favor.", kids:"A casa recebe até 8 pessoas no total.", qok:"Obrigado. O pedido foi enviado ao proprietário, que responde por email com a disponibilidade e o orçamento.", off:"O formulário está a ser configurado. Volte em breve, por favor.",
-      prev:"Meses anteriores", next:"Meses seguintes", dates:"Datas",
-      seeN:n=>"Ver as "+n+" fotografias", slide:n=>"Fotografia "+n, close:"Fechar", pPrev:"Fotografia anterior", pNext:"Fotografia seguinte"}
+      prev:"Meses anteriores", next:"Meses seguintes", dates:"Datas", booked:"ocupado",
+      seeN:n=>"Ver as "+n+" fotografias", slide:n=>"Fotografia "+n, close:"Fechar", pPrev:"Fotografia anterior", pNext:"Fotografia seguinte"},
+  es:{sync:"Disponibilidad sincronizada el", nosync:"El calendario se está conectando. Envíenos sus fechas y le confirmamos la disponibilidad.",
+      sel1:"Llegada", sel2:"ahora elija el día de salida.", nights:n=>n===1?"1 noche":n+" noches", busyIn:"Algunos de estos días ya están reservados. Elija otras fechas, por favor.",
+      sending:"Enviando…", ok:"Gracias. Su mensaje se ha enviado y el propietario le responderá por correo electrónico.", err:"No se ha podido enviar el mensaje. Inténtelo de nuevo en un momento.",
+      need:"Indique su nombre y un correo electrónico válido, por favor.", kids:"La casa admite hasta 8 personas en total.", qok:"Gracias. Su solicitud se ha enviado al propietario, que le responderá por correo electrónico con la disponibilidad y el presupuesto.", off:"El formulario se está configurando. Vuelva pronto, por favor.",
+      prev:"Meses anteriores", next:"Meses siguientes", dates:"Fechas", booked:"ocupado",
+      seeN:n=>"Ver las "+n+" fotos", slide:n=>"Foto "+n, close:"Cerrar", pPrev:"Foto anterior", pNext:"Foto siguiente"},
+  fr:{sync:"Disponibilités synchronisées le", nosync:"Le calendrier est en cours de connexion. Envoyez-nous vos dates et nous confirmerons les disponibilités.",
+      sel1:"Arrivée", sel2:"choisissez maintenant votre jour de départ.", nights:n=>n===1?"1 nuit":n+" nuits", busyIn:"Certains de ces jours sont déjà réservés. Merci de choisir d'autres dates.",
+      sending:"Envoi en cours…", ok:"Merci. Votre message a été envoyé et le propriétaire vous répondra par e-mail.", err:"Le message n'a pas pu être envoyé. Merci de réessayer dans un instant.",
+      need:"Merci d'indiquer votre nom et une adresse e-mail valide.", kids:"La maison accueille jusqu'à 8 personnes au total.", qok:"Merci. Votre demande a été envoyée au propriétaire, qui vous répondra par e-mail avec les disponibilités et un devis.", off:"Le formulaire est en cours de configuration. Merci de revenir bientôt.",
+      prev:"Mois précédents", next:"Mois suivants", dates:"Dates", booked:"réservé",
+      seeN:n=>"Voir les "+n+" photos", slide:n=>"Photo "+n, close:"Fermer", pPrev:"Photo précédente", pNext:"Photo suivante"},
+  de:{sync:"Verfügbarkeit synchronisiert am", nosync:"Der Kalender wird gerade verbunden. Senden Sie uns Ihre Daten, wir bestätigen die Verfügbarkeit.",
+      sel1:"Anreise", sel2:"wählen Sie jetzt Ihren Abreisetag.", nights:n=>n===1?"1 Nacht":n+" Nächte", busyIn:"Einige dieser Tage sind bereits belegt. Bitte wählen Sie andere Daten.",
+      sending:"Wird gesendet…", ok:"Vielen Dank. Ihre Nachricht wurde gesendet, der Eigentümer antwortet per E-Mail.", err:"Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es gleich noch einmal.",
+      need:"Bitte geben Sie Ihren Namen und eine gültige E-Mail-Adresse an.", kids:"Das Haus bietet Platz für insgesamt bis zu 8 Gäste.", qok:"Vielen Dank. Ihre Anfrage wurde an den Eigentümer gesendet, der Ihnen per E-Mail mit Verfügbarkeit und Angebot antwortet.", off:"Das Formular wird gerade eingerichtet. Bitte schauen Sie bald wieder vorbei.",
+      prev:"Vorherige Monate", next:"Nächste Monate", dates:"Daten", booked:"belegt",
+      seeN:n=>"Alle "+n+" Fotos ansehen", slide:n=>"Foto "+n, close:"Schließen", pPrev:"Vorheriges Foto", pNext:"Nächstes Foto"}
  }
 };
 // guardar o texto inglês original
 document.querySelectorAll("[data-i18n]").forEach(el => { T.en[el.dataset.i18n] = el.innerHTML; });
 
+const LANGS = ["en","pt","es","fr","de"];
+const LOC = {en:"en-GB", pt:"pt-PT", es:"es-ES", fr:"fr-FR", de:"de-DE"};
+const DOWS = {en:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], pt:["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"], es:["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"], fr:["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"], de:["Mo","Di","Mi","Do","Fr","Sa","So"]};
+const IDIOMA_PT = {en:"Inglês", pt:"Português", es:"Espanhol", fr:"Francês", de:"Alemão"};
+const browserLang = () => { for (const l of (navigator.languages || [navigator.language || ""])) { const c = String(l).toLowerCase().slice(0,2); if (LANGS.includes(c)) return c; } return "en"; };
 let lang = "en";
-try { const s = localStorage.getItem("cm-lang"); if (s) lang = s; else if ((navigator.language||"").toLowerCase().startsWith("pt")) lang = "pt"; } catch(e) { if ((navigator.language||"").toLowerCase().startsWith("pt")) lang = "pt"; }
+try { const s = localStorage.getItem("cm-lang"); lang = LANGS.includes(s) ? s : browserLang(); } catch(e) { lang = browserLang(); }
 const M = () => T.msg[lang];
 
 function applyLang(l){
-  lang = l; document.documentElement.lang = l === "pt" ? "pt-PT" : "en";
+  lang = LANGS.includes(l) ? l : "en"; l = lang; document.documentElement.lang = LOC[l];
   document.querySelectorAll("[data-i18n]").forEach(el => { const v = (T[l]||{})[el.dataset.i18n] ?? T.en[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
   document.getElementById("prev").setAttribute("aria-label", M().prev);
@@ -546,8 +891,8 @@ function rangeFree(a,b){ for (let d = new Date(a); d < b; d = addDays(d,1)) if (
 function renderCal(){
   const box = document.getElementById("months"); if (!box) return;
   const n = perView(); box.innerHTML = "";
-  const fmtM = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB", {month:"long", year:"numeric"});
-  const dows = lang === "pt" ? ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"] : ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const fmtM = new Intl.DateTimeFormat(LOC[lang], {month:"long", year:"numeric"});
+  const dows = DOWS[lang];
   for (let k=0;k<n;k++){
     const first = new Date(today.getFullYear(), today.getMonth()+offset+k, 1);
     const el = document.createElement("div"); el.className = "month";
@@ -562,9 +907,9 @@ function renderCal(){
       if (start && iso(start) === key) cls += " sel";
       if (end && iso(end) === key) cls += " edge";
       if (start && end && dt > start && dt < end) cls += " range";
-      const lbl = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB",{dateStyle:"full"}).format(dt);
+      const lbl = new Intl.DateTimeFormat(LOC[lang],{dateStyle:"full"}).format(dt);
       if (past) h += `<span class="${cls}" aria-hidden="true">${d}</span>`;
-      else h += `<button type="button" class="${cls}" data-d="${key}" aria-label="${lbl}${b ? " · " + (lang==="pt"?"ocupado":"booked") : ""}">${d}</button>`;
+      else h += `<button type="button" class="${cls}" data-d="${key}" aria-label="${lbl}${b ? " · " + M().booked : ""}">${d}</button>`;
     }
     el.innerHTML = h + "</div>"; box.appendChild(el);
   }
@@ -594,7 +939,7 @@ let selMsg = "";
 function setMsg(t){ selMsg = t; renderSel(true); }
 function renderSel(keep){
   const box = document.getElementById("sel-box"), txt = document.getElementById("sel-text");
-  const f = new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-GB",{day:"numeric",month:"short",year:"numeric"});
+  const f = new Intl.DateTimeFormat(LOC[lang],{day:"numeric",month:"short",year:"numeric"});
   if (!keep) selMsg = "";
   const q = document.getElementById("quote");
   q.hidden = !(start && end);
@@ -612,7 +957,7 @@ function renderSync(){
   const el = document.getElementById("sync");
   if (!syncInfo || !Object.values(syncInfo.fontes||{}).includes("ok")) { el.textContent = M().nosync; return; }
   const t = new Date(syncInfo.atualizado);
-  el.textContent = `${M().sync}: ${t.toLocaleString(lang === "pt" ? "pt-PT" : "en-GB",{dateStyle:"medium",timeStyle:"short"})}.`;
+  el.textContent = `${M().sync}: ${t.toLocaleString(LOC[lang],{dateStyle:"medium",timeStyle:"short"})}.`;
 }
 
 fetch("data/disponibilidade.json?t=" + Date.now(),{cache:"no-store"}).then(r => r.ok ? r.json() : null).then(d => {
@@ -671,7 +1016,7 @@ document.getElementById("q-form").addEventListener("submit", async e => {
     "Chegada": fpt.format(start), "Partida": fpt.format(end), "Noites": n,
     "Adultos": ad, "Crianças": ki, "Nome": name, email, replyto: email,
     "Telefone": (fd.get("phone")||"").trim() || "-", "País": (fd.get("country")||"").trim() || "-",
-    "Mensagem": (fd.get("message")||"").trim() || "-", "Idioma do visitante": lang === "pt" ? "Português" : "Inglês"
+    "Mensagem": (fd.get("message")||"").trim() || "-", "Idioma do visitante": IDIOMA_PT[lang]
   }, st, btn, M().qok);
   if (ok) { e.target.reset(); }
 });
@@ -686,7 +1031,7 @@ document.getElementById("form").addEventListener("submit", async e => {
   const ok = await enviar({
     subject: "Pergunta pelo site da Casa da Madrinha",
     "Nome": name, email, replyto: email, "Mensagem": (fd.get("message")||"").trim() || "-",
-    "Idioma do visitante": lang === "pt" ? "Português" : "Inglês"
+    "Idioma do visitante": IDIOMA_PT[lang]
   }, st, btn, M().ok);
   if (ok) e.target.reset();
 });
@@ -701,8 +1046,8 @@ const esc = t => String(t).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(
 function srcset(f){ return Object.entries(f.srcs).map(([w,n]) => `img/${n} ${w}w`).join(", "); }
 function maior(f){ const k = Object.keys(f.srcs).map(Number).sort((a,b)=>b-a)[0]; return "img/" + f.srcs[String(k)]; }
 function menor(f){ const k = Object.keys(f.srcs).map(Number).sort((a,b)=>a-b)[0]; return "img/" + f.srcs[String(k)]; }
-const roomName = r => (lang === "pt" ? r.pt : r.en) || r.pt;
-function altOf(g){ return (lang === "pt" ? g.alt_pt : g.alt_en) || g.alt_en || "Casa da Madrinha"; }
+const roomName = r => r[lang] || r.en || r.pt;
+function altOf(g){ return g["alt_" + lang] || g.alt_en || "Casa da Madrinha"; }
 const img = (f, sizes, alt, extra="") => `<img loading="lazy" decoding="async" srcset="${srcset(f)}" sizes="${sizes}" src="${menor(f)}" alt="${esc(alt)}" width="${f.w}" height="${f.h}"${extra}>`;
 
 function renderPhotos(){
