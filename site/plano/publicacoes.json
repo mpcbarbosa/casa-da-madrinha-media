@@ -5,7 +5,7 @@
    "id": "2026-10-04-apresentacao",
    "quando": "2026-10-04",
    "tipo": "carrossel",
-   "estado": "rascunho",
+   "estado": "pronto",
    "imagens": [
     "https://casadamadrinha.myshortstays.eu/img/1Kpg4Z93z17ddQVPM7K2ZpPL9_JcTkXQJ-1200.jpg",
     "https://casadamadrinha.myshortstays.eu/img/19UoBBt3XCRgr7JooDyHTi0-etd3v-s_2-1200.jpg",
@@ -18,14 +18,14 @@
    "id": "2026-10-04-story-1",
    "quando": "2026-10-04",
    "tipo": "story",
-   "estado": "rascunho",
+   "estado": "pronto",
    "imagens": ["https://casadamadrinha.myshortstays.eu/img/1bRm_sXOVD1kJtzrq0zWiwFKiZEoGAnLv-1200.jpg"]
   },
   {
    "id": "2026-10-04-story-2",
    "quando": "2026-10-04",
    "tipo": "story",
-   "estado": "rascunho",
+   "estado": "pronto",
    "imagens": ["https://casadamadrinha.myshortstays.eu/img/1COkShz5Kx8vZE1kVCHFmfaMczxKfgV7a-1200.jpg"]
   }
  ]
