@@ -45,8 +45,8 @@ API = "https://www.googleapis.com/drive/v3/files"
 PASTA = "application/vnd.google-apps.folder"
 
 # ordem por omissão das divisões (pela palavra com que o nome da pasta começa)
-ORDEM = ["quarto", "suite", "cozinha", "sala", "wc", "casa de banho", "vista", "piscina",
-         "terraco", "varanda", "jardim", "exterior", "churrasqueira", "vila", "praia"]
+ORDEM = ["quarto", "suite", "cozinha", "sala", "wc", "casa de banho", "vista", "paisage", "piscina",
+         "terraco", "varanda", "jardim", "exterior", "churrasqueira", "arredores", "vila", "praia"]
 
 # tradução automática do início do nome da pasta (o resto, p. ex. o número, mantém-se)
 #                       en               es             fr                 de
@@ -78,7 +78,15 @@ TRAD = {
     "praia":             ("Beach",        "Playa",       "Plage",           "Strand"),
     "zona de refeicoes": ("Dining area",  "Comedor",     "Coin repas",      "Essbereich"),
     "corredor":          ("Hallway",      "Pasillo",     "Couloir",         "Flur"),
+    "paisagens":         ("Landscapes",   "Paisajes",    "Paysages",        "Landschaften"),
+    "paisagem":          ("Landscape",    "Paisaje",     "Paysage",         "Landschaft"),
+    "arredores":         ("Surroundings", "Alrededores", "Environs",        "Umgebung"),
+    "quintal":           ("Garden",       "Jardín",      "Jardin",          "Garten"),
+    "rio":               ("River",        "Río",         "Rivière",         "Fluss"),
+    "mar":               ("Sea",          "Mar",         "Mer",             "Meer"),
+    "serra":             ("Hills",        "Sierra",      "Collines",        "Berge"),
 }
+LIGACAO = {"en": "and", "es": "y", "fr": "et", "de": "und"}
 IDIOMAS = ("en", "es", "fr", "de")
 
 
@@ -202,6 +210,34 @@ def capitalizar(s):
     return " ".join(out)
 
 
+def traduz_parte(parte):
+    """«Quarto 1» → {"en": "Bedroom 1", ...}; só aceita o resto se for um número/letra."""
+    n = norm(parte)
+    for k in sorted(TRAD, key=len, reverse=True):
+        if n == k or n.startswith(k + " "):
+            resto = parte.split()[len(k.split()):]
+            if resto and not all(re.fullmatch(r"[0-9]+|[a-z]", norm(r)) for r in resto):
+                return None
+            return {lang: " ".join([t] + resto) for lang, t in zip(IDIOMAS, TRAD[k])}
+    return None
+
+
+def traduzir(pt):
+    """Traduz nomes simples («Cozinha») e compostos («Jardim e Piscina», «Sala, Cozinha»).
+    Se alguma parte não for conhecida, devolve {} e o nome fica em português em todos os idiomas."""
+    partes = [x for x in re.split(r"\s+e\s+|\s*&\s*|\s*,\s*|\s*/\s*", pt, flags=re.I) if x]
+    trad = [traduz_parte(x) for x in partes]
+    if not partes or any(t is None for t in trad):
+        return {}
+    out = {}
+    for lang in IDIOMAS:
+        ps = [t[lang] for t in trad]
+        if lang != "de":  # em alemão os substantivos mantêm a maiúscula
+            ps = [ps[0]] + [x[:1].lower() + x[1:] for x in ps[1:]]
+        out[lang] = ps[0] if len(ps) == 1 else ", ".join(ps[:-1]) + f" {LIGACAO[lang]} " + ps[-1]
+    return out
+
+
 def titulos(nome_pasta):
     """«02 Quarto 1» → ordem 2 e {"pt": "Quarto 1", "en": "Bedroom 1", "es": "Dormitorio 1", ...}.
 
@@ -213,18 +249,12 @@ def titulos(nome_pasta):
     partes = [capitalizar(x.strip()) for x in nome.split("|")]
     pt, manuais = partes[0], partes[1:]
     nomes = {"pt": pt}
-    n = norm(pt)
-    for k in sorted(TRAD, key=len, reverse=True):
-        if n == k or n.startswith(k + " "):
-            resto = pt.split()[len(k.split()):]
-            for lang, t in zip(IDIOMAS, TRAD[k]):
-                nomes[lang] = " ".join([t] + resto)
-            break
+    nomes.update(traduzir(pt))
     for lang, t in zip(IDIOMAS, manuais):
         if t:
             nomes[lang] = t
     for lang in IDIOMAS:
-        nomes.setdefault(lang, nomes.get("en", pt))
+        nomes.setdefault(lang, pt)
     return ordem_manual, nomes
 
 
@@ -233,7 +263,7 @@ def ordem_divisao(ordem_manual, nome):
         return (0, ordem_manual, chave_natural(nome))
     n = norm(nome)
     for i, k in enumerate(ORDEM):
-        if n == k or n.startswith(k + " "):
+        if n.startswith(k):
             return (1, i, chave_natural(nome))
     return (2, 0, chave_natural(nome))
 
